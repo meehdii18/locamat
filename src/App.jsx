@@ -16,7 +16,7 @@ function App() {
             </div>
 
             <div className="connexionDiv">
-                <p className="welcome">Bienvenue !</p>
+                <p className="welcome">Bienvenue!</p>
                 <p className="pleaseid">Veuillez vous identifiez</p>
                 <button>Connexion</button>
             </div>
