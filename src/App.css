@@ -1,0 +1,64 @@
+body {
+  background-color: #F5F5F5;
+  color: black;
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  position: relative;
+}
+
+.logoDiv {
+  position: absolute;
+  left: -25em;
+  top: -10em;
+  color: black;
+  border-radius: 20px;
+  padding: 1em;
+}
+
+.connexionDiv {
+  position: absolute;
+  top: -10em;
+  left: 15em;
+  width: 400px;
+  background-color: white;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  box-shadow: 0px 10px 30px -3px rgba(0,0,0,0.1);}
+
+.connexionDiv button{
+  border-radius: 50px;
+}
+
+.connexionDiv button:hover{
+  font-weight: bold;
+}
+
+.welcome{
+  font-size: 40pt;
+  font-weight: bold;
+  margin: 0;
+}
+
+.pleaseid{
+  margin-top: 0;
+  font-size: 20pt;
+}
+
+.logo {
+  height: 10em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+
+.logo:hover {
+  filter: drop-shadow(0 0 2em cyan);
+}
+
