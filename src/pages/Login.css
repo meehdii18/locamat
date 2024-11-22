@@ -1,0 +1,34 @@
+body {
+    background-color: #F5F5F5;
+    color: black;
+}
+
+#root {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    position: relative;
+}
+
+.logoDiv {
+    position: absolute;
+    left: -25em;
+    top: -10em;
+    color: black;
+    border-radius: 20px;
+    padding: 1em;
+    height: 10%;
+}
+
+.logo {
+    height: 10em;
+    padding: 1.5em;
+    transition: transform 0.5s ease-in-out; /* Add transition for smooth animation */
+
+}
+
+.logo:hover {
+    filter: drop-shadow(0 0 2em mediumpurple);
+    transform: rotate(360deg); /* Rotate the logo 360 degrees */
+
+}

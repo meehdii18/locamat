@@ -1,50 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useFirebase } from './FirebaseContext.jsx';
-import appleLogo from './assets/apple.svg';
-import { signInWithEmailAndPassword } from 'firebase/auth';
 import './App.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from './pages/Home.jsx'
+import Login from './pages/Login.jsx'
 
 function App() {
     const { db, auth } = useFirebase();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-
-    const handleLogin = async () => {
-        try {
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            console.log('User signed in:', userCredential.user);
-        } catch (error) {
-            console.error('Error signing in:', error);
-        }
-    };
 
     return (
-        <>
-            <div className="logoDiv">
-                <a href="https://react.dev" target="_blank">
-                    <img src={appleLogo} className="logo apple" alt="Apple logo" />
-                </a>
-                <h1>locaMat</h1>
-            </div>
-
-            <div className="connexionDiv">
-                <p className="welcome">Bienvenue!</p>
-                <p className="pleaseid">Veuillez vous identifiez</p>
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <input
-                    type="password"
-                    placeholder="Mot de passe"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                <button onClick={handleLogin}>Connexion</button>
-            </div>
-        </>
+        <Router>
+            <Routes>
+                <Route path="/" element={<Login />} />
+                <Route path="/home" element={<Home />} />
+            </Routes>
+        </Router>
     );
 }
 
