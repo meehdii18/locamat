@@ -2,13 +2,13 @@ body {
     background-color: #F5F5F5;
     color: black;
 }
-
+/*
 #root {
     max-width: 1280px;
     margin: 0 auto;
     padding: 2rem;
     position: relative;
-}
+}*/
 
 .logoDiv {
     position: absolute;

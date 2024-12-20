@@ -12,7 +12,7 @@ export default function Header({ currentUser }) {
         e.preventDefault();
         try {
             await signOut(auth);
-            navigate("/login");
+            navigate("/");
         } catch (err) {
             console.log("Erreur de déconnexion " + err);
         }
@@ -22,7 +22,7 @@ export default function Header({ currentUser }) {
             <nav>
                 <ul>
                     {currentUser && <li className="currentUser">Salut, {currentUser.email}</li>}
-                    <li><a href="/public">Home</a></li>
+                    <li><a href="/home">Home</a></li>
                     <li><a onClick={handleDisconnect}>Déconnecter</a></li>
                 </ul>
             </nav>
