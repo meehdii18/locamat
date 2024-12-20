@@ -2,8 +2,8 @@ import React from 'react';
 import { useFirebase } from './FirebaseContext.jsx';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Home from './pages/Home.jsx'
-import Login from './pages/Login.jsx'
+import Home from './pages/Home/Home.jsx'
+import Login from './pages/Login/Login.jsx'
 
 function App() {
     const { db, auth } = useFirebase();

@@ -1,8 +1,8 @@
 import React from 'react';
-import { useFirebase } from '../FirebaseContext.jsx';
+import { useFirebase } from '../../FirebaseContext.jsx';
 import './Login.css';
-import LoginForm from "../components/LoginForm/LoginForm.jsx";
-import reactLogo from "../assets/react.svg";
+import LoginForm from "../../components/LoginForm/LoginForm.jsx";
+import reactLogo from "../../assets/react.svg";
 
 function Login() {
     const { db, auth } = useFirebase();

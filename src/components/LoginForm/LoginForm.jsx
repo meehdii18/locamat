@@ -33,7 +33,7 @@ export default function LoginForm() {
     const handleMouseDownPassword = (event) => {
       event.preventDefault();
     };
-  
+
     const handleMouseUpPassword = (event) => {
       event.preventDefault();
     };
@@ -84,10 +84,10 @@ export default function LoginForm() {
                         ),
                     }}
                 />
-                <Button 
-                    variant="contained" 
-                    type="submit" 
-                    className="submitButton" 
+                <Button
+                    variant="contained"
+                    type="submit"
+                    className="submitButton"
                     sx={{ backgroundColor: 'black', '&:hover': { backgroundColor: 'darkViolet' } }}
                 >
                     Connexion
