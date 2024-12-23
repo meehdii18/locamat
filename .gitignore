@@ -34,5 +34,8 @@ typings/
 # Yarn Integrity file
 .yarn-integrity
 
+# Firebase API Key
+src/firebase.js
+
 .idea
 .DS_Store
