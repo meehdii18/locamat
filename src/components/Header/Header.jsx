@@ -8,7 +8,7 @@ export default function Header({ currentUser }) {
             <nav>
                 <ul>
                     {currentUser && <li className="currentUser">Salut, {currentUser.email}</li>}
-                    <li><a href="/public">Home</a></li>
+                    <li><a href="/home">Home</a></li>
                 </ul>
             </nav>
         </header>
