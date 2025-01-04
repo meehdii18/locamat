@@ -1,7 +1,6 @@
 .footer {
     background-color: #f8f9fa;
     padding: 1em 0;
-    text-align: center;
     border-top: 1px solid #e7e7e7;
     position: absolute;
     bottom: 0;
@@ -15,28 +14,5 @@
 }
 
 .footer p {
-    margin: 0;
     color: #6c757d;
-    text-align: center;
-}
-
-.footer nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0.5em 0 0;
-    display: flex;
-    justify-content: center;
-}
-
-.footer nav ul li {
-    margin: 0 1em;
-}
-
-.footer nav ul li a {
-    text-decoration: none;
-    color: #007bff;
-}
-
-.footer nav ul li a:hover {
-    text-decoration: underline;
 }

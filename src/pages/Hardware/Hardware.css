@@ -1,0 +1,130 @@
+.container {
+    display: grid;
+    grid-template-areas:
+        "photo details"
+        "photo specs";
+    grid-template-columns: 2fr 3fr;
+    grid-gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    background-color: #f3f3f3;
+    border-radius: 10px;
+    box-shadow: 0 10px 100px rgba(0, 0, 0, 0.2);
+    border: solid #9107d6 1px;
+}
+
+.top-left {
+    grid-area: photo;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border: solid #9107d6 1px;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.top-left img {
+    max-width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+}
+
+.top-right {
+    grid-area: details;
+    background-color: #fff;
+    border: solid #9107d6 1px;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.top-right h1 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.top-right p {
+    font-size: 1rem;
+    color: #555;
+    margin: 5px 0;
+}
+
+.top-right .price {
+    font-size: 1.5rem;
+    color: #b12704;
+    margin: 20px 0;
+}
+
+.top-right button {
+    background-color: #ffa41c;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.top-right button:hover {
+    background-color: #cc8500;
+}
+
+.bottom-right {
+    grid-area: specs;
+    background-color: #fff;
+    border: solid #9107d6 1px;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.bottom-right h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #9107d6;
+    padding-bottom: 5px;
+}
+
+.bottom-right ul {
+    list-style: none;
+    padding: 0;
+}
+
+.bottom-right li {
+    font-size: 1rem;
+    color: #555;
+    margin: 10px 0;
+}
+
+.bottom-right li strong {
+    color: #333;
+}
+
+.bottom-right p {
+    display: flex;
+    padding: 8px 0;
+    color: #555;
+}
+
+
+.bottom-right p strong {
+    font-size: 1rem;
+    color: #333;
+    margin-right: 10px;
+}
+
+.bottom-left {
+    border: solid #9107d6 1px;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+
+body {
+    background-color: #f7f1ff;
+}
+
