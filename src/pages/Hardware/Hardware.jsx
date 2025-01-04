@@ -49,19 +49,22 @@ function Hardware() {
                 <img src={hardwareData.photo} alt="hardwarephoto" />
             </div>
             <div className="bottom-left">
-                <img src={"https://m.media-amazon.com/images/I/61JU8Be5TbL._AC_UF1000,1000_QL80_.jpg"} alt="calendar" />
+                <img src={"https://www.calendriergratuit.fr/images/annuel3/calendrier-2025.jpg"} alt="calendar" />
             </div>
             <div className="top-right">
                 <h1>{hardwareData.name}</h1>
             </div>
             <div className="bottom-right">
-                <p>Nom: {hardwareData.name}</p>
-                <p>Ref: {hardwareData.ref}</p>
-                <br/>
-                <p>Pavé numérique: {hardwareData.numericPad ? 'oui' : 'non'}</p>
+                <p>
+                    <strong>Nom :</strong>
+                    <span>{hardwareData.name}</span>
+                </p>
+                <p>
+                    <strong>Référence :</strong>
+                    <span>{hardwareData.ref}</span>
+                </p>
                 <br/>
 
-                {/*specific attributes*/}
                 <h2>Specific attributes</h2>
                 {hardwareData.details_specifiques ? (
                     <ul>
