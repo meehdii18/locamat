@@ -1,0 +1,10 @@
+.admin_navigation {
+    position: fixed;
+    top: 10%;
+    left: 0;
+    width: 20%;
+    bottom: 10%;
+    background-color: #6c757d;
+    z-index: 1000;
+    box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+}
