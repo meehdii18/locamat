@@ -7,6 +7,7 @@ import Header from './components/Header/Header.jsx'
 import Footer from './components/Footer/Footer.jsx';
 import Admin_Users from './pages/Admin/Users/Users.jsx';
 import UserPage from "./pages/Admin/UserPage/UserPage.jsx";
+import CreateUser from "./pages/Admin/CreateUser/CreateUser.jsx";
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
                         <Route path="/hardware/:id" element={<Hardware/>}/>
                         <Route path="/admin/users" element={<Admin_Users/>}/>
                         <Route path="/admin/users/:id" element={<UserPage/>}/>
+                        <Route path="/admin/users/createuser" element={<CreateUser/>}/>
                     </Routes>
                 <Footer/>
             </Router>
