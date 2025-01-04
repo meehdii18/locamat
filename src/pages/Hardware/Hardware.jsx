@@ -33,7 +33,7 @@ function Hardware() {
         };
 
         fetchData();
-    }, [id]);
+    }, [id, db]);
 
     if (error) {
         return <div>{error}</div>;
