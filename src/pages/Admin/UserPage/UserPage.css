@@ -1,4 +1,3 @@
-/* Style général pour la page utilisateur */
 .userPage {
     width: 100%;
     max-width: 600px;
@@ -8,6 +7,7 @@
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
+    border: solid #9107d6 1px;
 }
 
 .userPage h1 {
@@ -23,6 +23,7 @@
     background-color: #f9f9f9;
     border-radius: 8px;
     margin-bottom: 20px;
+    border: solid #9107d6 1px;
 }
 
 .userPage p {
@@ -32,7 +33,6 @@
 }
 
 
-/* Ajout d'un effet sur chaque ligne de données */
 .userPage p:hover {
     background-color: #f0f0f0;
     transition: all 0.3s ease;

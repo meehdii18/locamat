@@ -1,10 +1,9 @@
-/* Style général du formulaire */
-
 
 form {
     width: 300px;
     margin: 0 auto;
     padding: 20px;
+    border: solid #9107d6 1px;
     border-radius: 8px;
     background-color: #f9f9f9;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -14,10 +13,11 @@ input {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: solid #9107d6 1px;
+    border-radius: 10px;
     box-sizing: border-box;
     font-size: 14px;
+    background-color: #ffe7ff;
 }
 
 input:focus {
