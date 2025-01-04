@@ -1,4 +1,5 @@
 import './UserPage.css';
+// eslint-disable-next-line no-unused-vars
 import React, {useEffect, useState} from "react";
 import {doc, getDoc} from "firebase/firestore";
 import {db} from "../../../firebase.js";
@@ -38,7 +39,15 @@ function UserPage() {
     }
 
     return (
-        <div>rien pour l instant</div>
+        <div className="userPage">
+            <h1>User id : {id}</h1>
+            <div>
+                <p>First Name: {userData.firstName}</p>
+                <p>Last Name: {userData.lastName}</p>
+                <p>Email: {userData.email}</p>
+                <p>Phone number: {userData.phoneNumber}</p>
+            </div>
+        </div>
     );
 }
 

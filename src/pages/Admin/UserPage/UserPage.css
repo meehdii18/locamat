@@ -1,0 +1,40 @@
+/* Style général pour la page utilisateur */
+.userPage {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+.userPage h1 {
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.userPage div {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.userPage p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+
+/* Ajout d'un effet sur chaque ligne de données */
+.userPage p:hover {
+    background-color: #f0f0f0;
+    transition: all 0.3s ease;
+}
+
