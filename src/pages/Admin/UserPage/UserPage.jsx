@@ -1,14 +1,16 @@
 import './UserPage.css';
-// eslint-disable-next-line no-unused-vars
 import React, {useEffect, useState} from "react";
-import {doc, getDoc} from "firebase/firestore";
+import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {db} from "../../../firebase.js";
 import {useParams} from "react-router-dom";
+import { Button } from "@mui/material";
 
 function UserPage() {
     const { id } = useParams(); // Fetch the id from the url
     const [userData, setUserData] = useState(null);
     const [error, setError] = useState(null);
+    const [editField, setEditField] = useState(null);
+    const [editValue, setEditValue] = useState("");
 
     useEffect(() => {
         const fetchData = async () => {
@@ -28,7 +30,27 @@ function UserPage() {
 
         fetchData();
 
-    }, [id, db]);
+    }, [id]);
+
+    const handleDoubleClick = (field) => {
+        setEditField(field);
+        setEditValue(userData[field]);
+    };
+
+    const handleChange = (e) => {
+        setEditValue(e.target.value);
+    };
+
+    const handleSave = async () => {
+        try {
+            const docRef = doc(db, "users", id);
+            await updateDoc(docRef, {[editField]: editValue});
+            setUserData({...userData, [editField]: editValue});
+            setEditField(null);
+        } catch (err) {
+            setError(err.message);
+        }
+    };
 
     if (error) {
         return <div>{error}</div>;
@@ -38,14 +60,24 @@ function UserPage() {
         return <div>No data found</div>;
     }
 
+
+    // TODO : Voir pour la modification de l'email si ça a du sens et voir comment le faire avec l'authentification
     return (
         <div className="userPage">
             <h1>User id : {id}</h1>
             <div>
-                <p>First Name: {userData.firstName}</p>
-                <p>Last Name: {userData.lastName}</p>
+                {["firstName", "lastName", "phoneNumber"].map((field) => (
+                    <p key={field} onDoubleClick={() => handleDoubleClick(field)}>
+                        {field.charAt(0).toUpperCase() + field.slice(1)}:
+                        {editField === field ? (
+                            <input type="text" value={editValue} onChange={handleChange}/>
+                        ) : (
+                            userData[field]
+                        )}
+                    </p>
+                ))}
                 <p>Email: {userData.email}</p>
-                <p>Phone number: {userData.phoneNumber}</p>
+                {editField && <Button variant="contained" onClick={handleSave}>Save</Button>}
             </div>
         </div>
     );
