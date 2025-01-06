@@ -4,6 +4,7 @@ import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {db} from "../../../firebase.js";
 import {useParams} from "react-router-dom";
 import { Button } from "@mui/material";
+import Admin_navigation from "../Navigation/Admin_navigation.jsx";
 
 function UserPage() {
     const { id } = useParams(); // Fetch the id from the url
@@ -63,21 +64,24 @@ function UserPage() {
 
     // TODO : Voir pour la modification de l'email si ça a du sens et voir comment le faire avec l'authentification
     return (
-        <div className="userPage">
-            <h1>User id : {id}</h1>
-            <div>
-                {["firstName", "lastName", "phoneNumber"].map((field) => (
-                    <p key={field} onDoubleClick={() => handleDoubleClick(field)}>
-                        {field.charAt(0).toUpperCase() + field.slice(1)}:
-                        {editField === field ? (
-                            <input type="text" value={editValue} onChange={handleChange}/>
-                        ) : (
-                            userData[field]
-                        )}
-                    </p>
-                ))}
-                <p>Email: {userData.email}</p>
-                {editField && <Button variant="contained" onClick={handleSave}>Save</Button>}
+        <div>
+            <Admin_navigation/>
+            <div className="userPage">
+                <h1>User id : {id}</h1>
+                <div>
+                    {["firstName", "lastName", "phoneNumber"].map((field) => (
+                        <p key={field} onDoubleClick={() => handleDoubleClick(field)}>
+                            {field.charAt(0).toUpperCase() + field.slice(1)}:
+                            {editField === field ? (
+                                <input type="text" value={editValue} onChange={handleChange}/>
+                            ) : (
+                                userData[field]
+                            )}
+                        </p>
+                    ))}
+                    <p>Email: {userData.email}</p>
+                    {editField && <Button variant="contained" onClick={handleSave}>Save</Button>}
+                </div>
             </div>
         </div>
     );
