@@ -4,9 +4,14 @@ import {Box, Tab} from "@mui/material";
 import TabContext from "@mui/lab/TabContext";
 import Admin_Users from "../Users/Users.jsx";
 import {TabList, TabPanel} from "@mui/lab";
+import {useParams} from "react-router-dom";
 
 function Admin_navigation() {
-    const [value, setValue] = React.useState('1');
+    let { tab } = useParams();
+    if (tab === undefined) {
+        tab = 'users';
+    }
+    const [value, setValue] = React.useState(tab);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -20,14 +25,14 @@ function Admin_navigation() {
                              aria-label="lab API tabs example"
                              textColor={"secondary"}
                              indicatorColor={"secondary"}>
-                        <Tab label="Users" value="1" />
-                        <Tab label="Hardware" value="2" />
+                        <Tab label="Users" value="users" />
+                        <Tab label="Hardware" value="hardware" />
                     </TabList>
                 </Box>
-                <TabPanel value="1">
+                <TabPanel value="users">
                     <Admin_Users/>
                 </TabPanel>
-                <TabPanel value="2">
+                <TabPanel value="hardware">
                     admin hardware
                 </TabPanel>
             </TabContext>

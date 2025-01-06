@@ -81,7 +81,7 @@ function UserPage() {
                     <p>Email: {userData.email}</p>
                     {editField && <Button variant="contained" onClick={handleSave}>Save</Button>}
                 </div>
-                <Button variant={"contained"} href={"http://localhost:5173/admin"}>retour</Button>
+                <Button variant={"contained"} href={"http://localhost:5173/admin/users"}>retour</Button>
             </div>
         </div>
     );
