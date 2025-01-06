@@ -1,4 +1,4 @@
-import Admin_navigation from "../Admin_navigation.jsx";
+import Admin_navigation from "../Navigation/Admin_navigation.jsx";
 
 function Hardware() {
   return (

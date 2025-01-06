@@ -1,4 +1,4 @@
-import Admin_navigation from "../Admin_navigation.jsx";
+import Admin_navigation from "../Navigation/Admin_navigation.jsx";
 import { useEffect, useState } from "react";
 import { db, auth } from "../../../firebase.js";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";

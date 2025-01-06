@@ -7,7 +7,7 @@ import Header from './components/Header/Header.jsx'
 import Footer from './components/Footer/Footer.jsx';
 import Admin_Users from "./pages/Admin/Users/Users.jsx";
 import Admin_Hardware from "./pages/Admin/Hardware/Hardware.jsx";
-import Admin_navigation from "./pages/Admin/Admin_navigation.jsx";
+import Admin_navigation from "./pages/Admin/Navigation/Admin_navigation.jsx";
 import UserPage from "./pages/Admin/UserPage/UserPage.jsx";
 import CreateUser from "./pages/Admin/CreateUser/CreateUser.jsx";
 
