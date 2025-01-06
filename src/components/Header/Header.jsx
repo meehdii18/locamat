@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
 import { useFirebase } from '../../FirebaseContext.jsx';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 import './Header.css';
 
 export default function Header({ currentUser }) {
@@ -28,19 +32,19 @@ export default function Header({ currentUser }) {
     };
 
     return (
-        <header className="header">
-            <nav>
-                <ul>
-                    {currentUser && <li className="currentUser">Salut, {currentUser.email}</li>}
-                    <li><a href="/home">Home</a></li>
-                    {isAdmin && (
-                        <li>
-                            <button onClick={handleAdminClick}>Admin</button>
-                        </li>
-                    )}
-                </ul>
-            </nav>
-        </header>
+        <AppBar position="fixed" style={{ background: 'black' }}>
+            <Toolbar>
+                {currentUser && (
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                        Salut, {currentUser.email}
+                    </Typography>
+                )}
+                <Button color="inherit" href="/home">Home</Button>
+                {isAdmin && (
+                    <Button color="inherit" onClick={handleAdminClick}>Admin</Button>
+                )}
+            </Toolbar>
+        </AppBar>
     );
 }
 
