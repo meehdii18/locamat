@@ -71,7 +71,6 @@ function UserPage() {
     // TODO : Voir pour la modification de l'email si ça a du sens et voir comment le faire avec l'authentification
     return (
         <div>
-            <Admin_navigation/>
             <div className="userPage">
                 <h1>User id : {id}</h1>
                 <div>
@@ -89,6 +88,7 @@ function UserPage() {
                     <p>Email: {userData.email}</p>
                     {editField && <Button variant="contained" onClick={handleSave}>Save</Button>}
                 </div>
+                <Button variant={"contained"} href={"http://localhost:5173/admin"}>retour</Button>
             </div>
         </div>
     );
