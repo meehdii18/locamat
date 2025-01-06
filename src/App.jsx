@@ -21,7 +21,6 @@ function App() {
                     <Route path="/hardware/:id" element={<Hardware/>}/>
                     <Route path="/admin" element={<Admin_navigation/>}/>
                     <Route path="/admin/:tab" element={<Admin_navigation/>}/>
-                    <Route path="/admin/users/:id" element={<UserPage/>}/>
                     <Route path="/admin/users/createuser" element={<CreateUser/>}/>
                 </Routes>
                 <Footer/>

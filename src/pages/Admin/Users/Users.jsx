@@ -24,7 +24,6 @@ import {
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import IconButton from "@mui/material/IconButton";
 import UserPage from "../UserPage/UserPage.jsx";
 import AddIcon from '@mui/icons-material/Add';
 

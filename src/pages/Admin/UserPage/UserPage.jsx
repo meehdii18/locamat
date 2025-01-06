@@ -2,9 +2,7 @@ import './UserPage.css';
 import React, {useEffect, useState} from "react";
 import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {db} from "../../../firebase.js";
-import {useParams} from "react-router-dom";
 import { Button } from "@mui/material";
-import Admin_navigation from "../Navigation/Admin_navigation.jsx";
 import { validateForm } from "../../../userFormValidation.js";
 
 function UserPage(props) {
