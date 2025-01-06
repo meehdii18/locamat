@@ -1,0 +1,25 @@
+.container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Deux colonnes égales */
+    gap: 16px; /* Marge entre les éléments */
+    width: 90vw;
+    margin: 50px auto;
+}
+
+.cardHardware {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 16px; /* Marge interne */
+}
+
+.imgHardware {
+    width: auto;
+    height: 25vw;
+}
+
+.titleType {
+    margin-top: 22px;
+    text-align: center;
+    font-size: 2em;
+}
