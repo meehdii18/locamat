@@ -1,4 +1,3 @@
-
 .create-user-form form {
     width: 300px;
     margin: 0 auto;
@@ -25,7 +24,7 @@
     border-color: #5b9bd5;
 }
 
-.create-user-form button {
+.submit-button {
     width: 100%;
     padding: 12px;
     background-color: #4caf50;
@@ -36,11 +35,11 @@
     cursor: pointer;
 }
 
-.create-user-form button:hover {
+.submit-button:hover {
     background-color: #45a049;
 }
 
-.create-user-form button:active {
+.submit-button:active {
     background-color: #3e8e41;
 }
 
@@ -51,5 +50,3 @@
     margin: 0;
     padding-top: 5px;
 }
-
-

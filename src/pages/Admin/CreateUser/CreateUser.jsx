@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 import './CreateUser.css';
+import {FormControlLabel, FormGroup, Switch} from "@mui/material";
 
 const CreateUser = () => {
     const [formData, setFormData] = useState({
@@ -56,7 +57,8 @@ const CreateUser = () => {
                     firstName: formData.firstName,
                     lastName: formData.lastName,
                     phoneNumber: formData.phoneNumber,
-                    email: formData.email
+                    email: formData.email,
+                    admin: formData.admin
                 });
 
                 alert('User created successfully');
@@ -67,8 +69,8 @@ const CreateUser = () => {
     };
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        const { name, value, type, checked } = e.target;
+        setFormData({ ...formData, [name]: type === 'checkbox' ? checked : value });
     };
 
     return (
@@ -123,7 +125,14 @@ const CreateUser = () => {
             />
             {errors.password && <p>{errors.password}</p>}
 
-            <button type="submit">Create User</button>
+            <FormGroup>
+                <FormControlLabel
+                    control={<Switch checked={formData.admin} onChange={handleChange} name="admin" />}
+                    label="Admin"
+                />
+            </FormGroup>
+
+            <button type="submit" className="submit-button">Create User</button>
         </form>
     );
 };
