@@ -1,5 +1,5 @@
 
-form {
+.create-user-form form {
     width: 300px;
     margin: 0 auto;
     padding: 20px;
@@ -9,7 +9,7 @@ form {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-input {
+.create-user-form input {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -20,12 +20,12 @@ input {
     background-color: #ffe7ff;
 }
 
-input:focus {
+.create-user-form input:focus {
     outline: none;
     border-color: #5b9bd5;
 }
 
-button {
+.create-user-form button {
     width: 100%;
     padding: 12px;
     background-color: #4caf50;
@@ -36,16 +36,16 @@ button {
     cursor: pointer;
 }
 
-button:hover {
+.create-user-form button:hover {
     background-color: #45a049;
 }
 
-button:active {
+.create-user-form button:active {
     background-color: #3e8e41;
 }
 
 
-p {
+.create-user-form p {
     color: red;
     font-size: 12px;
     margin: 0;

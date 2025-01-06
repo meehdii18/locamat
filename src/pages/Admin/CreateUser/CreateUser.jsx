@@ -72,7 +72,7 @@ const CreateUser = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={"create-user-form"}>
             <input
                 type="text"
                 name="firstName"
