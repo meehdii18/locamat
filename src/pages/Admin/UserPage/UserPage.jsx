@@ -5,6 +5,7 @@ import {db} from "../../../firebase.js";
 import {useParams} from "react-router-dom";
 import { Button } from "@mui/material";
 import Admin_navigation from "../Navigation/Admin_navigation.jsx";
+import { validateForm } from "../../../userFormValidation.js";
 
 function UserPage() {
     const { id } = useParams(); // Fetch the id from the url
@@ -12,6 +13,7 @@ function UserPage() {
     const [error, setError] = useState(null);
     const [editField, setEditField] = useState(null);
     const [editValue, setEditValue] = useState("");
+    const [errors, setErrors] = useState({});
 
     useEffect(() => {
         const fetchData = async () => {
@@ -43,13 +45,17 @@ function UserPage() {
     };
 
     const handleSave = async () => {
-        try {
-            const docRef = doc(db, "users", id);
-            await updateDoc(docRef, {[editField]: editValue});
-            setUserData({...userData, [editField]: editValue});
-            setEditField(null);
-        } catch (err) {
-            setError(err.message);
+        const newErrors = validateForm({ ...userData, [editField]: editValue });
+        setErrors(newErrors);
+        if (Object.keys(newErrors).length === 0) {
+            try {
+                const docRef = doc(db, "users", id);
+                await updateDoc(docRef, { [editField]: editValue });
+                setUserData({ ...userData, [editField]: editValue });
+                setEditField(null);
+            } catch (err) {
+                setError(err.message);
+            }
         }
     };
 
@@ -79,6 +85,7 @@ function UserPage() {
                             )}
                         </p>
                     ))}
+                    {errors[editField] && <p className="errorMessage">{errors[editField]}</p>} {/* Display the right error message */}
                     <p>Email: {userData.email}</p>
                     {editField && <Button variant="contained" onClick={handleSave}>Save</Button>}
                 </div>
