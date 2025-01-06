@@ -1,4 +1,5 @@
 import './UserPage.css';
+// eslint-disable-next-line no-unused-vars
 import React, {useEffect, useState} from "react";
 import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {db} from "../../../firebase.js";
@@ -43,20 +44,23 @@ function UserPage(props) {
         setEditValue(e.target.value);
     };
 
-    const handleSave = async () => {
-        const newErrors = validateForm({ ...userData, [editField]: editValue });
-        setErrors(newErrors);
-        if (Object.keys(newErrors).length === 0) {
-            try {
-                const docRef = doc(db, "users", id);
-                await updateDoc(docRef, { [editField]: editValue });
-                setUserData({ ...userData, [editField]: editValue });
-                setEditField(null);
-            } catch (err) {
-                setError(err.message);
-            }
+const handleSave = async () => {
+    const newErrors = validateForm({ ...userData, [editField]: editValue });
+    setErrors(newErrors);
+    console.log(newErrors);
+    if (Object.keys(newErrors).length === 0) {
+        try {
+            const docRef = doc(db, "users", id);
+            await updateDoc(docRef, { [editField]: editValue });
+            setUserData({ ...userData, [editField]: editValue });
+            setEditField(null);
+        } catch (err) {
+            setError(err.message);
         }
-    };
+    } else {
+        console.log("Validation errors:", newErrors);
+    }
+};
 
     if (error) {
         return <div>{error}</div>;
