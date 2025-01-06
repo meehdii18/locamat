@@ -11,7 +11,8 @@ const CreateUser = () => {
         lastName: '',
         email: '',
         password: '',
-        phoneNumber: ''
+        phoneNumber: '',
+        admin: false
     });
     const [errors, setErrors] = useState({});
     const auth = getAuth();

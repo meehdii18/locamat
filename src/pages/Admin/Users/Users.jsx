@@ -1,7 +1,8 @@
 import Admin_navigation from "../Admin_navigation.jsx";
 import { useEffect, useState } from "react";
-import { db } from "../../../firebase.js";
-import { collection, getDocs } from "firebase/firestore";
+import { db, auth } from "../../../firebase.js";
+import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 import "./Users.css";
 import {
     Paper,
@@ -12,7 +13,13 @@ import {
     tableCellClasses,
     TableContainer,
     TableHead, TablePagination,
-    TableRow
+    TableRow,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Button
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -21,8 +28,9 @@ import IconButton from "@mui/material/IconButton";
 function Admin_Users() {
     const [error, setError] = useState(null);
     const [users, setUsers] = useState([]);
-
-
+    const [open, setOpen] = useState(false);
+    const [selectedUserId, setSelectedUserId] = useState(null);
+    const navigate = useNavigate();
 
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
         [`&.${tableCellClasses.head}`]: {
@@ -58,17 +66,45 @@ function Admin_Users() {
             try {
                 console.log("Fetching users...");
                 const allUsers = await getDocs(collection(db, "users"));
-                const fetchedUsers = []; // Stockage temporaire
+                const fetchedUsers = [];
                 allUsers.forEach((user) => {
-                    fetchedUsers.push(user.data());
+                    fetchedUsers.push({ id: user.id, ...user.data() });
                 });
-                setUsers(fetchedUsers); // Mise à jour immuable de l'état
+                setUsers(fetchedUsers);
             } catch (err) {
                 setError(err.message);
             }
         };
         fetchUsers().then(() => console.log("Users fetched!"));
     }, []);
+
+    const handleClickOpen = (id) => {
+        setSelectedUserId(id);
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+        setSelectedUserId(null);
+    };
+
+    const handleDelete = async () => {
+        try {
+            // Delete user from Firestore
+            await deleteDoc(doc(db, "users", selectedUserId));
+            setUsers(users.filter(user => user.id !== selectedUserId));
+
+            // Delete user from Firebase Authentication
+            const user = auth.currentUser;
+            if (user) {
+                await user.delete();
+            }
+
+            handleClose();
+        } catch (err) {
+            setError(err.message);
+        }
+    };
 
     if (error) {
         return <p>Erreur : {error}</p>;
@@ -100,7 +136,7 @@ function Admin_Users() {
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((user) => {
                                     return (
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={user.email}>
+                                        <TableRow hover role="checkbox" tabIndex={-1} key={user.id}>
                                             {columns.map((column) => {
                                                 const value = user[column.id];
                                                 return (
@@ -112,8 +148,12 @@ function Admin_Users() {
                                                 );
                                             })}
                                             <TableCell>
-                                                <IconButton color={"primary"}><EditIcon/></IconButton>
-                                                <IconButton color={"error"}><DeleteIcon/></IconButton>
+                                                <IconButton color={"primary"} onClick={() => navigate(`/admin/users/${user.id}`)}>
+                                                    <EditIcon/>
+                                                </IconButton>
+                                                <IconButton color={"error"} onClick={() => handleClickOpen(user.id)}>
+                                                    <DeleteIcon/>
+                                                </IconButton>
                                             </TableCell>
                                         </TableRow>
                                     );
@@ -131,8 +171,28 @@ function Admin_Users() {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">{"Confirm Deletion"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure you want to delete this user?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={handleDelete} color="primary" autoFocus>
+                        Delete
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
-
     );
 }
 
