@@ -202,10 +202,10 @@ function Admin_Users() {
                                                 );
                                             })}
                                             <TableCell>
-                                                <IconButton color={"primary"} onClick={() => handleEdit(user.id)}>
+                                                <IconButton color={"secondary"} onClick={() => handleEdit(user.id)}>
                                                     <EditIcon/>
                                                 </IconButton>
-                                                <IconButton color={"error"} onClick={() => handleClickOpen(user.id)}>
+                                                <IconButton color={"secondary"} onClick={() => handleClickOpen(user.id)}>
                                                     <DeleteIcon/>
                                                 </IconButton>
                                             </TableCell>
