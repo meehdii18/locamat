@@ -18,15 +18,18 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    Button
+    Button,
+    IconButton,
+    TextField
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import IconButton from "@mui/material/IconButton";
+import AddIcon from '@mui/icons-material/Add';
 
 function Admin_Users() {
     const [error, setError] = useState(null);
     const [users, setUsers] = useState([]);
+    const [searchQuery, setSearchQuery] = useState("");
     const [open, setOpen] = useState(false);
     const [selectedUserId, setSelectedUserId] = useState(null);
     const navigate = useNavigate();
@@ -106,12 +109,55 @@ function Admin_Users() {
         }
     };
 
+    const handleAddUser = () => {
+        navigate('/admin/users/createuser');
+    };
+
+    const handleSearchChange = (event) => {
+        setSearchQuery(event.target.value);
+    };
+
+    const filteredUsers = users.filter(user =>
+        user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.lastName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     if (error) {
         return <p>Erreur : {error}</p>;
     }
 
     return (
         <div>
+            <TextField
+                label="Search"
+                variant="outlined"
+                value={searchQuery}
+                onChange={handleSearchChange}
+                style={{ marginBottom: '20px', width: '100%'   }}
+                sx={{
+                    '& .MuiOutlinedInput-root': {
+                        '&:hover fieldset': {
+                            borderColor: '#9c27b0',
+                        },
+                        '&.Mui-focused fieldset': {
+                            borderColor: '#9c27b0',
+                        },
+                    },
+                    '& .MuiInputLabel-root.Mui-focused': {
+                    color: '#9c27b0',
+                },
+                }}
+            />
+            <Button
+                variant="contained"
+                color="secondary"
+                startIcon={<AddIcon />}
+                onClick={handleAddUser}
+                style={{ marginBottom: '20px' }}
+            >
+                Add User
+            </Button>
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                 <TableContainer sx={{ maxHeight: 440 }}>
                     <Table stickyHeader aria-label="sticky table">
@@ -130,7 +176,7 @@ function Admin_Users() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {users
+                            {filteredUsers
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((user) => {
                                     return (
@@ -160,7 +206,7 @@ function Admin_Users() {
                 <TablePagination
                     rowsPerPageOptions={[1, 10, 25, 100]}
                     component="div"
-                    count={users.length}
+                    count={filteredUsers.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}
