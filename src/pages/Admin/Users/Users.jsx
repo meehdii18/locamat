@@ -47,6 +47,7 @@ function Admin_Users() {
         { id: 'firstName', label: 'First Name', minWidth: 100 },
         { id: 'lastName', label: 'Last Name', minWidth: 170 },
         { id: 'phoneNumber', label: 'Phone Number', minWidth: 170 },
+        { id: 'admin', label: 'Admin', minWidth: 100 },
     ];
 
     const [page, setPage] = useState(0);
@@ -141,9 +142,7 @@ function Admin_Users() {
                                                 const value = user[column.id];
                                                 return (
                                                     <TableCell key={column.id} align={column.align}>
-                                                        {column.format && typeof value === 'number'
-                                                            ? column.format(value)
-                                                            : value}
+                                                        {column.id === 'admin' ? (value ? 'Yes' : 'No') : value}
                                                     </TableCell>
                                                 );
                                             })}
