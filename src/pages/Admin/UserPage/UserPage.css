@@ -4,10 +4,7 @@
     margin: 0 auto;
     padding: 20px;
     background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
-    border: solid #9107d6 1px;
 }
 
 .userPage h1 {

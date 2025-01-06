@@ -23,11 +23,13 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from "@mui/material/IconButton";
+import UserPage from "../UserPage/UserPage.jsx";
 
 function Admin_Users() {
     const [error, setError] = useState(null);
     const [users, setUsers] = useState([]);
     const [open, setOpen] = useState(false);
+    const [edit, setEdit] = useState(false);
     const [selectedUserId, setSelectedUserId] = useState(null);
     const navigate = useNavigate();
 
@@ -88,6 +90,16 @@ function Admin_Users() {
         setSelectedUserId(null);
     };
 
+    const handleEdit = (id) => {
+        setSelectedUserId(id);
+        setEdit(true);
+    };
+
+    const handleEditClose = () => {
+        setEdit(false);
+        setSelectedUserId(null);
+    }
+
     const handleDelete = async () => {
         try {
             // Delete user from Firestore
@@ -144,7 +156,7 @@ function Admin_Users() {
                                                 );
                                             })}
                                             <TableCell>
-                                                <IconButton color={"primary"} onClick={() => navigate(`/admin/users/${user.id}`)}>
+                                                <IconButton color={"primary"} onClick={() => handleEdit(user.id)}>
                                                     <EditIcon/>
                                                 </IconButton>
                                                 <IconButton color={"error"} onClick={() => handleClickOpen(user.id)}>
@@ -185,6 +197,25 @@ function Admin_Users() {
                     </Button>
                     <Button onClick={handleDelete} color="primary" autoFocus>
                         Delete
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <Dialog
+                open={edit}
+                onClose={handleEditClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                sx={{ border: 'solid #9107d6 1px' }}
+            >
+                <DialogTitle id="alert-dialog-title">{"Edit User"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        <UserPage id={selectedUserId}/>
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleEditClose} color="secondary" variant={"contained"}>
+                        Retour
                     </Button>
                 </DialogActions>
             </Dialog>

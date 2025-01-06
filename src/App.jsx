@@ -5,7 +5,6 @@ import Login from './pages/Login/Login.jsx'
 import Hardware from './pages/Hardware/Hardware.jsx'
 import Header from './components/Header/Header.jsx'
 import Footer from './components/Footer/Footer.jsx';
-import Admin_Hardware from "./pages/Admin/Hardware/Hardware.jsx";
 import Admin_navigation from "./pages/Admin/Navigation/Admin_navigation.jsx";
 import UserPage from "./pages/Admin/UserPage/UserPage.jsx";
 import CreateUser from "./pages/Admin/CreateUser/CreateUser.jsx";

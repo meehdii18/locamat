@@ -4,10 +4,10 @@ import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {db} from "../../../firebase.js";
 import {useParams} from "react-router-dom";
 import { Button } from "@mui/material";
-import Admin_navigation from "../Navigation/Admin_navigation.jsx";
 
-function UserPage() {
-    const { id } = useParams(); // Fetch the id from the url
+function UserPage(props) {
+    // eslint-disable-next-line react/prop-types
+    const id = props.id; // Fetch the id from the url
     const [userData, setUserData] = useState(null);
     const [error, setError] = useState(null);
     const [editField, setEditField] = useState(null);
@@ -79,9 +79,8 @@ function UserPage() {
                         </p>
                     ))}
                     <p>Email: {userData.email}</p>
-                    {editField && <Button variant="contained" onClick={handleSave}>Save</Button>}
+                    {editField && <Button variant="contained" color={"secondary"} onClick={handleSave}>Save</Button>}
                 </div>
-                <Button variant={"contained"} href={"http://localhost:5173/admin/users"}>retour</Button>
             </div>
         </div>
     );
