@@ -8,6 +8,9 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import './Header.css';
+import IconButton from "@mui/material/IconButton";
+import HomeIcon from '@mui/icons-material/Home';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 export default function Header({ currentUser }) {
     const { db } = useFirebase();
@@ -39,9 +42,16 @@ export default function Header({ currentUser }) {
                         Salut, {currentUser.email}
                     </Typography>
                 )}
-                <Button color="inherit" href="/home">Home</Button>
+                <IconButton color="inherit" href="/home">
+                    <HomeIcon/>
+                    Home
+                </IconButton>
+
                 {isAdmin && (
-                    <Button color="inherit" onClick={handleAdminClick}>Admin</Button>
+                    <IconButton color="inherit" onClick={handleAdminClick}>
+                        <AdminPanelSettingsIcon/>
+                        Admin
+                    </IconButton>
                 )}
             </Toolbar>
         </AppBar>
