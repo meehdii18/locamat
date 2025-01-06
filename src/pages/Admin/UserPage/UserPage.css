@@ -35,6 +35,11 @@
     transition: all 0.3s ease;
 }
 
+.userPage .errorMessage {
+    color: red;
+    font-size: 14px;
+}
+
 input {
     color: black;
 }

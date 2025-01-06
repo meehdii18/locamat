@@ -7,6 +7,9 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import IconButton from "@mui/material/IconButton";
+import HomeIcon from '@mui/icons-material/Home';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import './Header.css';
 
 export default function Header({ currentUser }) {
@@ -39,9 +42,31 @@ export default function Header({ currentUser }) {
                         Salut, {currentUser.email}
                     </Typography>
                 )}
-                <Button color="inherit" href="/home">Home</Button>
+                <IconButton color="inherit" href="/home"
+                            sx={{
+                                transition: 'color 0.3s ease',
+                                '&:hover': {
+                                    color: '#747bff',
+                                },
+                            }}>
+                    <HomeIcon/>
+                    Home
+                </IconButton>
+
                 {isAdmin && (
-                    <Button color="inherit" onClick={handleAdminClick}>Admin</Button>
+                    <IconButton
+                        color="inherit"
+                        onClick={handleAdminClick}
+                        sx={{
+                            transition: 'color 0.3s ease',
+                            '&:hover': {
+                                color: '#747bff',
+                            },
+                        }}
+                    >
+                        <AdminPanelSettingsIcon/>
+                        Admin
+                    </IconButton>
                 )}
             </Toolbar>
         </AppBar>

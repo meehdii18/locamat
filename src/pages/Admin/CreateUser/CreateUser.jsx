@@ -1,9 +1,9 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 import './CreateUser.css';
-import {FormControlLabel, FormGroup, Switch} from "@mui/material";
+import { FormControlLabel, FormGroup, Switch } from "@mui/material";
+import { validateForm } from "../../../userFormValidation.js";
 
 const CreateUser = () => {
     const [formData, setFormData] = useState({
@@ -18,42 +18,14 @@ const CreateUser = () => {
     const auth = getAuth();
     const db = getFirestore();
 
-    const validateForm = () => {
-        let newErrors = {};
-
-        if (!/^.+@locamat\.fr$/.test(formData.email)) {
-            newErrors.email = "Email must be of type xxx@locamat.fr";
-        }
-
-        if (!/^[a-zA-Z0-9]{1,30}$/.test(formData.firstName)) {
-            newErrors.firstName = "First name must be alphanumeric and between 1-30 characters";
-        }
-
-        if (!/^[a-zA-Z0-9]{1,30}$/.test(formData.lastName)) {
-            newErrors.lastName = "Last name must be alphanumeric and between 1-30 characters";
-        }
-
-        if (!/^\d{10}$/.test(formData.phoneNumber)) {
-            newErrors.phoneNumber = "Phone number must be exactly 10 digits";
-        }
-
-        if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/.test(formData.password)) {
-            newErrors.password = "Password must contain at least 1 lowercase, 1 uppercase, 1 number, 1 special character and be 8+ characters";
-        }
-
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0; // If no errors
-    };
-
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Prevent reloading of the page
-        if (validateForm()) {
+        e.preventDefault();
+        const newErrors = validateForm(formData);
+        setErrors(newErrors);
+        if (Object.keys(newErrors).length === 0) {
             try {
-                // Firebase Auth Registration
                 const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
                 const user = userCredential.user;
-
-                // Firestore Registration
                 await setDoc(doc(db, "users", user.uid), {
                     firstName: formData.firstName,
                     lastName: formData.lastName,
@@ -61,7 +33,6 @@ const CreateUser = () => {
                     email: formData.email,
                     admin: formData.admin
                 });
-
                 alert('User created successfully');
             } catch (error) {
                 alert(error.message);
