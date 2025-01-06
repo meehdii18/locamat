@@ -65,7 +65,6 @@ function UserPage() {
     // TODO : Voir pour la modification de l'email si ça a du sens et voir comment le faire avec l'authentification
     return (
         <div>
-            <Admin_navigation/>
             <div className="userPage">
                 <h1>User id : {id}</h1>
                 <div>

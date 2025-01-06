@@ -1,4 +1,3 @@
-import Admin_navigation from "../Navigation/Admin_navigation.jsx";
 import { useEffect, useState } from "react";
 import { db, auth } from "../../../firebase.js";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
@@ -113,8 +112,6 @@ function Admin_Users() {
 
     return (
         <div>
-            <Admin_navigation/>
-            <h1>Admin Users</h1>
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                 <TableContainer sx={{ maxHeight: 440 }}>
                     <Table stickyHeader aria-label="sticky table">
