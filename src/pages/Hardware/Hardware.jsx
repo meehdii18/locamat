@@ -44,7 +44,7 @@ function Hardware() {
     }
 
     return (
-        <div className="container">
+        <div className="containerHardware">
             <div className="top-left">
                 <img src={hardwareData.photo} alt="hardwarephoto" />
             </div>
