@@ -7,6 +7,12 @@ import LoginForm from "../../components/LoginForm/LoginForm.jsx";
 import Header from "../../components/Header/Header.jsx";
 import Footer from "../../components/Footer/Footer.jsx";
 import { getDocs, collection, query, where, limit } from 'firebase/firestore';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom';
 
 function Home() {
     const { db } = useFirebase();
@@ -14,7 +20,6 @@ function Home() {
     const [error, setError] = useState(null);
     const [data, setData] = useState([]);
 
-    /* Gestion de l'utilisateur courant */
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -27,26 +32,20 @@ function Home() {
         return () => unsubscribe();
     }, []);
 
-    /* Collecter les données sur les équipements  */
     useEffect(() => {
-        // Récupérer les données de firebase
         const fetchData = async () => {
             try {
-                // Récupérer tous les types dynamiquement
                 const allDocsSnapshot = await getDocs(collection(db, "hardware"));
                 const allTypes = [
                     ...new Set(allDocsSnapshot.docs.map((doc) => doc.data().type)),
                 ];
 
-                // À partir des types, on récupère les 4 premiers équipements de chaque type
                 const promises = allTypes.map(async (type) => {
-                    // Requête pour récupérer les éléments de la collection "hardware"
                     const q = query(
                         collection(db, "hardware"),
                         where("type", "==", type),
                         limit(4)
                     );
-                    // Formater les données pour affichage
                     const querySnapshot = await getDocs(q);
                     return {
                         type,
@@ -56,13 +55,9 @@ function Home() {
                         })),
                     };
                 });
-                /* Attend que toutes les requêtes Firebase pour les types soient terminées
-                   et rassemble leurs résultats dans un tableau unique */
-                const results = await Promise.all(promises);
 
-                // Fusionner et mettre à jour l'état
+                const results = await Promise.all(promises);
                 setData(results.flat());
-                //console.log(data);
             } catch (err) {
                 setError(err.message);
             }
@@ -71,7 +66,6 @@ function Home() {
         fetchData();
     }, [data]);
 
-    // Affichage des erreurs pour debug
     if (error) {
         return <p>Erreur : {error}</p>;
     }
@@ -86,20 +80,28 @@ function Home() {
                             {data.map((group) => (
                                 <div key={group.type} className="material-card">
                                     <div className="top-card">
-                                        <h3>Type du matériel : {group.type}</h3>
-                                        <a href={"/hardware-list/" + group.type}>Voir plus</a>
+                                        <Typography variant="h5">Type du matériel : {group.type}</Typography>
+                                        <Button component={Link} to={"/hardware-list/" + group.type} variant="contained"
+                                                color="secondary">
+                                            Voir plus
+                                        </Button>
                                     </div>
-                                    <div className="bottom-card">
+                                    <div className="bottom-card card-container">
                                         {group.items.map((item) => (
-                                            <div key={item.id}>
-                                                <a href={"/hardware/" + item.id}>
-                                                    <img
-                                                        src={item.photo}
+                                            <Card key={item.id} className="cardHardware">
+                                                <Link to={"/hardware/" + item.id}>
+                                                    <CardMedia
+                                                        component="img"
+                                                        height="140"
+                                                        image={item.photo}
                                                         alt={`Image de l'équipement ${item.name}`}
                                                     />
-                                                </a>
-                                                <p>{item.name}</p>
-                                            </div>
+                                                    <CardContent>
+                                                        <Typography variant="h6"
+                                                                    color="secondary">{item.name}</Typography>
+                                                    </CardContent>
+                                                </Link>
+                                            </Card>
                                         ))}
                                     </div>
                                 </div>
@@ -107,10 +109,10 @@ function Home() {
                         </div>
                     </section>
                 ) : (
-                    <LoginForm />
+                    <LoginForm/>
                 )}
             </main>
-            <Footer />
+            <Footer/>
         </>
     );
 }
