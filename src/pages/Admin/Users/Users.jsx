@@ -238,10 +238,10 @@ function Admin_Users() {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleDeleteClose} color="primary">
+                    <Button onClick={handleDeleteClose} color="secondary" variant={"contained"}>
                         Cancel
                     </Button>
-                    <Button onClick={handleDelete} color="primary" autoFocus>
+                    <Button onClick={handleDelete} color="secondary" variant={"contained"} autoFocus>
                         Delete
                     </Button>
                 </DialogActions>
