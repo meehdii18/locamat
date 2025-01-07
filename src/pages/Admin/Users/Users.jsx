@@ -31,8 +31,8 @@ function Admin_Users() {
     const [error, setError] = useState(null);
     const [users, setUsers] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
-    const [open, setOpen] = useState(false);
-    const [edit, setEdit] = useState(false);
+    const [deleteDialog, setDeleteDialog] = useState(false);
+    const [editDialog, setEditDialog] = useState(false);
     const [selectedUserId, setSelectedUserId] = useState(null);
     const navigate = useNavigate();
 
@@ -83,23 +83,23 @@ function Admin_Users() {
         fetchUsers().then(() => console.log("Users fetched!"));
     }, []);
 
-    const handleClickOpen = (id) => {
+    const handleDeleteOpen = (id) => {
         setSelectedUserId(id);
-        setOpen(true);
+        setDeleteDialog(true);
     };
 
-    const handleClose = () => {
-        setOpen(false);
+    const handleDeleteClose = () => {
+        setDeleteDialog(false);
         setSelectedUserId(null);
     };
 
-    const handleEdit = (id) => {
+    const handleEditOpen = (id) => {
         setSelectedUserId(id);
-        setEdit(true);
+        setEditDialog(true);
     };
 
     const handleEditClose = () => {
-        setEdit(false);
+        setEditDialog(false);
         setSelectedUserId(null);
     }
 
@@ -115,7 +115,7 @@ function Admin_Users() {
                 await user.delete();
             }
 
-            handleClose();
+            handleDeleteClose();
         } catch (err) {
             setError(err.message);
         }
@@ -202,10 +202,10 @@ function Admin_Users() {
                                                 );
                                             })}
                                             <TableCell>
-                                                <IconButton color={"secondary"} onClick={() => handleEdit(user.id)}>
+                                                <IconButton color={"secondary"} onClick={() => handleEditOpen(user.id)}>
                                                     <EditIcon/>
                                                 </IconButton>
-                                                <IconButton color={"secondary"} onClick={() => handleClickOpen(user.id)}>
+                                                <IconButton color={"secondary"} onClick={() => handleDeleteOpen(user.id)}>
                                                     <DeleteIcon/>
                                                 </IconButton>
                                             </TableCell>
@@ -226,8 +226,8 @@ function Admin_Users() {
                 />
             </Paper>
             <Dialog
-                open={open}
-                onClose={handleClose}
+                open={deleteDialog}
+                onClose={handleDeleteClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
@@ -238,7 +238,7 @@ function Admin_Users() {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} color="primary">
+                    <Button onClick={handleDeleteClose} color="primary">
                         Cancel
                     </Button>
                     <Button onClick={handleDelete} color="primary" autoFocus>
@@ -247,7 +247,7 @@ function Admin_Users() {
                 </DialogActions>
             </Dialog>
             <Dialog
-                open={edit}
+                open={editDialog}
                 onClose={handleEditClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
