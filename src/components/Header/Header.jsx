@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
@@ -6,14 +6,13 @@ import { useFirebase } from '../../FirebaseContext.jsx';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import IconButton from "@mui/material/IconButton";
 import HomeIcon from '@mui/icons-material/Home';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import './Header.css';
 import {signOut} from "firebase/auth";
 import {auth} from "../../firebase.js";
-import {useNavigate} from "react-router-dom";
+import LogoutIcon from '@mui/icons-material/Logout';
+import './Header.css';
 
 export default function Header({ currentUser }) {
     const { db } = useFirebase();
@@ -33,12 +32,6 @@ export default function Header({ currentUser }) {
         fetchUserData();
     }, [currentUser, db]);
 
-    const handleAdminClick = () => {
-        navigate('/admin');
-    };
-
-    const navigate = useNavigate();
-
     const handleDisconnect = async (e) => {
         e.preventDefault();
         try {
@@ -48,6 +41,11 @@ export default function Header({ currentUser }) {
             console.log("Erreur de déconnexion " + err);
         }
     };
+
+    const handleAdminClick = () => {
+        navigate('/admin');
+    };
+
     return (
         <AppBar position="fixed" style={{ background: 'black' }}>
             <Toolbar>
@@ -66,7 +64,17 @@ export default function Header({ currentUser }) {
                     <HomeIcon/>
                     Home
                 </IconButton>
-                <li><a onClick={handleDisconnect}>Déconnecter</a></li>
+
+                <IconButton color="inherit" onClick={handleDisconnect}
+                            sx={{
+                                transition: 'color 0.3s ease',
+                                '&:hover': {
+                                    color: '#747bff',
+                                },
+                            }}>
+                    <LogoutIcon/>
+                    Disconnect
+                </IconButton>
 
                 {isAdmin && (
                     <IconButton

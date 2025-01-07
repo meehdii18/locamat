@@ -83,7 +83,6 @@ function Home() {
             <main>
                 {currentUser ? (
                     <section className="main-section">
-                        <h2>SALUT, {currentUser.email}</h2>
                         <div className="material-content">
                             {data.map((group) => (
                                 <div key={group.type} className="material-card">

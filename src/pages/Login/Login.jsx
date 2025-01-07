@@ -14,7 +14,7 @@ function Login() {
                 </a>
                 <h1>locaMat</h1>
             </div>
-            <LoginForm/>
+            <LoginForm classname="loginForm"/>
         </>
     );
 }
