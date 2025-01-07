@@ -5,8 +5,9 @@
     width: 100%;
     padding: 2rem;
     height: 100vh;
-    gap: 10em;
     justify-content: center;
+    gap: 30em;
+    margin-left: 10em;
 }
 
 .logoDiv {
