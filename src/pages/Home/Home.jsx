@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
-// Firebase Import
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth, db } from '../../firebase.js';
-import { query, where, limit, collection, getDocs } from "firebase/firestore";
-// CSS import
+import { auth } from '../../firebase.js';
+import { useFirebase } from '../../FirebaseContext.jsx';
 import '../../App.css';
-import './Home.css';
-// Component Import
 import LoginForm from "../../components/LoginForm/LoginForm.jsx";
-//import Header from "../../components/Header/Header.jsx";
-//import Footer from "../../components/Footer/Footer.jsx";
+import Header from "../../components/Header/Header.jsx";
+import Footer from "../../components/Footer/Footer.jsx";
+import reactLogo from "../../assets/hypnosis.svg";
 
 function Home() {
-    const [data, setData] = useState([]);
+    const { db } = useFirebase();
     const [currentUser, setCurrentUser] = useState(null);
     const [error, setError] = useState(null);
 
@@ -80,6 +77,7 @@ function Home() {
 
     return (
         <>
+            <Header currentUser={currentUser} />
             <main>
                 {currentUser ? (
                     <section className="main-section">
@@ -111,6 +109,7 @@ function Home() {
                     <LoginForm />
                 )}
             </main>
+            <Footer />
         </>
     );
 }
