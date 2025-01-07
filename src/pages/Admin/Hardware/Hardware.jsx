@@ -19,7 +19,7 @@ import {
     DialogTitle,
     Button,
     IconButton,
-    TextField
+    TextField, TableSortLabel
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -186,10 +186,9 @@ function Admin_Hardware() {
                                     return (
                                         <TableRow hover role="checkbox" tabIndex={-1} key={hardware.ref}>
                                             {columns.map((column) => {
-                                                const value = hardware[column.id];
                                                 return (
                                                     <TableCell key={column.id} align={column.align}>
-                                                        {column.id === 'admin' ? (value ? 'Yes' : 'No') : value}
+                                                        { hardware[column.id] }
                                                     </TableCell>
                                                 );
                                             })}
