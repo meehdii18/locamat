@@ -2,16 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../firebase.js';
 import { useFirebase } from '../../FirebaseContext.jsx';
-import '../../App.css';
+import './Home.css';
 import LoginForm from "../../components/LoginForm/LoginForm.jsx";
 import Header from "../../components/Header/Header.jsx";
 import Footer from "../../components/Footer/Footer.jsx";
-import reactLogo from "../../assets/hypnosis.svg";
+import { getDocs, collection, query, where, limit } from 'firebase/firestore';
 
 function Home() {
     const { db } = useFirebase();
     const [currentUser, setCurrentUser] = useState(null);
     const [error, setError] = useState(null);
+    const [data, setData] = useState([]);
 
     /* Gestion de l'utilisateur courant */
     useEffect(() => {
