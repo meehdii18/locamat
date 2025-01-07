@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { db } from "../../../firebase.js";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
@@ -19,11 +19,17 @@ import {
     DialogTitle,
     Button,
     IconButton,
-    TextField, TableSortLabel
+    TextField, TableSortLabel, Box
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
+import InfoIcon from '@mui/icons-material/Info';
+import {visuallyHidden} from "@mui/utils";
+import PropTypes from "prop-types";
+import {Hardware} from "@mui/icons-material";
+
+
 
 function Admin_Hardware() {
     const [error, setError] = useState(null);
@@ -32,6 +38,16 @@ function Admin_Hardware() {
     const [deleteDialog, setDeleteDialog] = useState(false);
     const [editDialog, setEditDialog] = useState(false);
     const [selectedHardwareId, setSelectedHardwareId] = useState(null);
+
+    const [order, setOrder] = React.useState('asc');
+    const [orderBy, setOrderBy] = React.useState('ref');
+
+    const handleRequestSort = (event, property) => {
+        const isAsc = orderBy === property && order === 'asc';
+        setOrder(isAsc ? 'desc' : 'asc');
+        setOrderBy(property);
+    };
+
     const navigate = useNavigate();
 
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -45,8 +61,8 @@ function Admin_Hardware() {
     }));
 
     const columns = [
-        { id: 'ref', label: 'Réference', minWidth: 170 },
-        { id: 'name', label: 'Nom', minWidth: 100 },
+        { id: 'ref', label: 'Reference', minWidth: 170 },
+        { id: 'name', label: 'Name', minWidth: 100 },
         { id: 'type', label: 'Type', minWidth: 170 },
     ];
 
@@ -126,9 +142,64 @@ function Admin_Hardware() {
         hardware.type.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    const sortedHardwares = filteredHardwares.sort((a, b) => {
+        if (order === 'asc') {
+            return a[orderBy] < b[orderBy] ? -1 : a[orderBy] > b[orderBy] ? 1 : 0;
+        } else {
+            return a[orderBy] > b[orderBy] ? -1 : a[orderBy] < b[orderBy] ? 1 : 0;
+        }
+    });
+
     if (error) {
         return <p>Erreur : {error}</p>;
     }
+
+    function EnhancedTableHead(props) {
+        const { order, orderBy, onRequestSort } =
+            props;
+        const createSortHandler = (property) => (event) => {
+            onRequestSort(event, property);
+        };
+
+        return (
+            <TableHead>
+                <TableRow>
+                    {columns.map((column) => (
+                        <StyledTableCell
+                            key={column.id}
+                        >
+                            <TableSortLabel
+                                active={orderBy === column.id}
+                                direction={orderBy === column.id ? order : 'asc'}
+                                onClick={createSortHandler(column.id)}
+                                sx={{
+                                    '&:hover , &.Mui-active , &.Mui-active .MuiTableSortLabel-icon': {
+                                        color: '#ffffff',
+                                    },
+                                }}
+                            >
+                                {column.label}
+                                {orderBy === column.id ? (
+                                    <Box component="span" sx={visuallyHidden}>
+                                        {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                                    </Box>
+                                ) : null}
+                            </TableSortLabel>
+                        </StyledTableCell>
+                    ))}
+                    <StyledTableCell>
+                        Actions
+                    </StyledTableCell>
+                </TableRow>
+            </TableHead>
+        );
+    }
+
+    EnhancedTableHead.propTypes = {
+        onRequestSort: PropTypes.func.isRequired,
+        order: PropTypes.oneOf(['asc', 'desc']).isRequired,
+        orderBy: PropTypes.string.isRequired,
+    };
 
     return (
         <div>
@@ -164,38 +235,35 @@ function Admin_Hardware() {
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                 <TableContainer sx={{ maxHeight: 440 }}>
                     <Table stickyHeader aria-label="sticky table">
-                        <TableHead>
-                            <TableRow>
-                                {columns.map((column) => (
-                                    <StyledTableCell
-                                        key={column.id}
-                                        align={column.align}
-                                        style={{ minWidth: column.minWidth }}
-                                    >
-                                        {column.label}
-                                    </StyledTableCell>
-                                ))}
-                                <StyledTableCell>Détails</StyledTableCell>
-                                <StyledTableCell>Actions</StyledTableCell>
-                            </TableRow>
-                        </TableHead>
+
+                        <EnhancedTableHead
+                            order={order}
+                            orderBy={orderBy}
+                            onRequestSort={handleRequestSort}
+                        />
                         <TableBody>
-                            {filteredHardwares
+                            {sortedHardwares
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((hardware) => {
                                     return (
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={hardware.ref}>
-                                            {columns.map((column) => {
-                                                return (
-                                                    <TableCell key={column.id} align={column.align}>
-                                                        { hardware[column.id] }
-                                                    </TableCell>
-                                                );
-                                            })}
+                                        <TableRow hover
+                                                  role="checkbox"
+                                                  tabIndex={-1}
+                                                  key={hardware.id}
+                                        >
                                             <TableCell>
-                                                <Button variant={"contained"} color={"secondary"}>Détails</Button>
+                                                {hardware.ref}
                                             </TableCell>
                                             <TableCell>
+                                                {hardware.name}
+                                            </TableCell>
+                                            <TableCell>
+                                                {hardware.type}
+                                            </TableCell>
+                                            <TableCell>
+                                                <IconButton color={"secondary"}>
+                                                    <InfoIcon/>
+                                                </IconButton>
                                                 <IconButton color={"secondary"} onClick={() => handleEditOpen(hardware.id)}>
                                                     <EditIcon/>
                                                 </IconButton>
@@ -250,7 +318,7 @@ function Admin_Hardware() {
                 <DialogTitle id="alert-dialog-title">{"Edit Hardware"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-
+                        
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
