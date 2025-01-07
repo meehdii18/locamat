@@ -1,7 +1,4 @@
 .connexionDiv {
-    position: absolute;
-    top: -10em;
-    left: 15em;
     width: 400px;
     background-color: white;
     border-radius: 20px;
@@ -51,6 +48,6 @@ form{
 }
 
 .inputText {
-    width: 100%; 
-    max-width: 400px; 
+    width: 100%;
+    max-width: 400px;
 }

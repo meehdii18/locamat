@@ -5,6 +5,7 @@ import TabContext from "@mui/lab/TabContext";
 import Admin_Users from "../Users/Users.jsx";
 import {TabList, TabPanel} from "@mui/lab";
 import {useParams} from "react-router-dom";
+import Admin_Hardware from "../Hardware/Hardware.jsx";
 
 function Admin_navigation() {
     let { tab } = useParams();
@@ -33,7 +34,7 @@ function Admin_navigation() {
                     <Admin_Users/>
                 </TabPanel>
                 <TabPanel value="hardware">
-                    admin hardware
+                    <Admin_Hardware/>
                 </TabPanel>
             </TabContext>
         </Box>

@@ -1,4 +1,4 @@
-.container {
+.containerHardware {
     display: grid;
     grid-template-areas:
         "photo details"

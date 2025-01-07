@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
@@ -64,7 +64,6 @@ export default function Header({ currentUser }) {
                     <HomeIcon/>
                     Home
                 </IconButton>
-
                 <IconButton color="inherit" onClick={handleDisconnect}
                             sx={{
                                 transition: 'color 0.3s ease',
@@ -99,6 +98,5 @@ export default function Header({ currentUser }) {
 Header.propTypes = {
     currentUser: PropTypes.shape({
         email: PropTypes.string,
-        uid: PropTypes.string,
     }),
 };
