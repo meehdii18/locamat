@@ -8,6 +8,7 @@ import Footer from './components/Footer/Footer.jsx';
 import Admin_navigation from "./pages/Admin/Navigation/Admin_navigation.jsx";
 import CreateUser from "./pages/Admin/CreateUser/CreateUser.jsx";
 import HardwareList from "./pages/Hardware/HardWareList.jsx";
+import CreateHardware from "./pages/Admin/CreateHardware/CreateHardware.jsx";
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
                     <Route path="/admin" element={<Admin_navigation/>}/>
                     <Route path="/admin/:tab" element={<Admin_navigation/>}/>
                     <Route path="/admin/users/createuser" element={<CreateUser/>}/>
+                    <Route path="/admin/hardware/createhardware" element={<CreateHardware/>}/>
                 </Routes>
                 <Footer/>
             </Router>

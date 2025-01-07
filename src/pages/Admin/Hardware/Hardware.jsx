@@ -112,8 +112,7 @@ function Admin_Hardware() {
     };
 
     const handleAddHardware = () => {
-        //TODO changer la page de destination
-        navigate('/admin/users/createuser');
+        navigate('/admin/hardware/createhardware');
     };
 
     const handleSearchChange = (event) => {
