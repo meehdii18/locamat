@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
@@ -11,6 +11,9 @@ import IconButton from "@mui/material/IconButton";
 import HomeIcon from '@mui/icons-material/Home';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import './Header.css';
+import {signOut} from "firebase/auth";
+import {auth} from "../../firebase.js";
+import {useNavigate} from "react-router-dom";
 
 export default function Header({ currentUser }) {
     const { db } = useFirebase();
@@ -52,6 +55,7 @@ export default function Header({ currentUser }) {
                     <HomeIcon/>
                     Home
                 </IconButton>
+                <li><a onClick={handleDisconnect}>Déconnecter</a></li>
 
                 {isAdmin && (
                     <IconButton
@@ -76,6 +80,5 @@ export default function Header({ currentUser }) {
 Header.propTypes = {
     currentUser: PropTypes.shape({
         email: PropTypes.string,
-        uid: PropTypes.string,
     }),
 };
