@@ -1,0 +1,52 @@
+.create-user-form form {
+    width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    border: solid #9107d6 1px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.create-user-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: solid #9107d6 1px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: 14px;
+    background-color: #ffe7ff;
+}
+
+.create-user-form input:focus {
+    outline: none;
+    border-color: #5b9bd5;
+}
+
+.submit-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    background-color: #45a049;
+}
+
+.submit-button:active {
+    background-color: #3e8e41;
+}
+
+
+.create-user-form p {
+    color: red;
+    font-size: 12px;
+    margin: 0;
+    padding-top: 5px;
+}
