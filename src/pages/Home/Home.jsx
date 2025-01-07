@@ -80,7 +80,7 @@ function Home() {
                             {data.map((group) => (
                                 <div key={group.type} className="material-card">
                                     <div className="top-card">
-                                        <Typography variant="h5">Type du matériel : {group.type}</Typography>
+                                        <Typography variant="h5">{group.type}</Typography>
                                         <Button component={Link} to={"/hardware-list/" + group.type} variant="contained"
                                                 color="secondary">
                                             Voir plus
