@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { db, auth } from "../../../firebase.js";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import "./Users.css";
 import {
     Paper,
     styled,

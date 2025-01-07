@@ -6,7 +6,6 @@ import '../../App.css';
 import LoginForm from "../../components/LoginForm/LoginForm.jsx";
 import Header from "../../components/Header/Header.jsx";
 import Footer from "../../components/Footer/Footer.jsx";
-import reactLogo from "../../assets/hypnosis.svg";
 
 function Home() {
     const { db } = useFirebase();
