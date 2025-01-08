@@ -45,8 +45,8 @@ function Admin_Hardware() {
     }));
 
     const columns = [
-        { id: 'ref', label: 'Réference', minWidth: 170 },
-        { id: 'name', label: 'Nom', minWidth: 100 },
+        { id: 'ref', label: 'Reference', minWidth: 170 },
+        { id: 'name', label: 'Name', minWidth: 100 },
         { id: 'type', label: 'Type', minWidth: 170 },
     ];
 
@@ -120,6 +120,10 @@ function Admin_Hardware() {
         setSearchQuery(event.target.value);
     };
 
+    const handleDetails = (id) => {
+        navigate(`/hardware/${id}`);
+    };
+
     const filteredHardwares = hardwares.filter(hardware =>
         hardware.ref.toString().includes(searchQuery.toLowerCase()) ||
         hardware.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -175,7 +179,6 @@ function Admin_Hardware() {
                                         {column.label}
                                     </StyledTableCell>
                                 ))}
-                                <StyledTableCell>Détails</StyledTableCell>
                                 <StyledTableCell>Actions</StyledTableCell>
                             </TableRow>
                         </TableHead>
@@ -194,9 +197,13 @@ function Admin_Hardware() {
                                                 );
                                             })}
                                             <TableCell>
-                                                <Button variant={"contained"} color={"secondary"}>Détails</Button>
-                                            </TableCell>
-                                            <TableCell>
+                                                <Button
+                                                    variant={"contained"}
+                                                    color={"secondary"}
+                                                    onClick={() => handleDetails(hardware.id)}
+                                                >
+                                                    Details
+                                                </Button>
                                                 <IconButton color={"secondary"} onClick={() => handleEditOpen(hardware.id)}>
                                                     <EditIcon/>
                                                 </IconButton>
@@ -256,7 +263,7 @@ function Admin_Hardware() {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleEditClose} color="secondary" variant={"contained"}>
-                        Retour
+                        Back
                     </Button>
                 </DialogActions>
             </Dialog>
