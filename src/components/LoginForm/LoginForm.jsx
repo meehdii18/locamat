@@ -38,10 +38,6 @@ export default function LoginForm() {
       event.preventDefault();
     };
 
-    const handleSignUp = () => {
-        navigate("/signup");
-    };
-
     return (
         <div className="connexionDiv">
             <p className="welcome">Bienvenue !</p>
@@ -57,6 +53,7 @@ export default function LoginForm() {
                     value={email}
                     required
                     onChange={(e) => setEmail(e.target.value)}
+                    color="secondary"
                 />
                 <TextField
                     className="inputText"
@@ -67,6 +64,7 @@ export default function LoginForm() {
                     value={password}
                     required
                     onChange={(e) => setPassword(e.target.value)}
+                    color="secondary"
                     InputProps={{
                         endAdornment: (
                             <InputAdornment position="end">
