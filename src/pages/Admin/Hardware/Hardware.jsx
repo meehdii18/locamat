@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { db } from "../../../firebase.js";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
@@ -77,7 +77,6 @@ function Admin_Hardware() {
     useEffect(() => {
         const fetchHardwares = async () => {
             try {
-                console.log("Fetching hardwares...");
                 const allHardwares = await getDocs(collection(db, "hardware"));
                 const fetchedHardwares = [];
                 allHardwares.forEach((hardware) => {
@@ -88,7 +87,7 @@ function Admin_Hardware() {
                 setError(err.message);
             }
         };
-        fetchHardwares().then(() => console.log("Hardwares fetched!"));
+        fetchHardwares();
     }, []);
 
     const handleDeleteOpen = (id) => {
@@ -101,26 +100,18 @@ function Admin_Hardware() {
         setSelectedHardwareId(null);
     };
 
-    const handleEditOpen = (id) => {
-        setSelectedHardwareId(id);
-        setEditDialog(true);
-    };
-
-    const handleEditClose = () => {
-        setEditDialog(false);
-        setSelectedHardwareId(null);
-    }
-
     const handleDelete = async () => {
         try {
-            // Delete hardware from Firestore
             await deleteDoc(doc(db, "hardware", selectedHardwareId));
             setHardwares(hardwares.filter(hardware => hardware.id !== selectedHardwareId));
-
             handleDeleteClose();
         } catch (err) {
             setError(err.message);
         }
+    };
+
+    const handleDetails = (id) => {
+        navigate(`/hardware/${id}`);
     };
 
     const handleAddHardware = () => {
@@ -133,10 +124,6 @@ function Admin_Hardware() {
 
     const handleSearchChange = (event) => {
         setSearchQuery(event.target.value);
-    };
-
-    const handleDetails = (id) => {
-        navigate(`/hardware/${id}`);
     };
 
     const filteredHardwares = hardwares.filter(hardware =>
@@ -206,7 +193,7 @@ function Admin_Hardware() {
                 variant="outlined"
                 value={searchQuery}
                 onChange={handleSearchChange}
-                style={{ marginBottom: '20px', width: '100%'   }}
+                style={{ marginBottom: '20px', width: '100%' }}
                 sx={{
                     '& .MuiOutlinedInput-root': {
                         '&:hover fieldset': {
@@ -233,52 +220,32 @@ function Admin_Hardware() {
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                 <TableContainer sx={{ maxHeight: 440 }}>
                     <Table stickyHeader aria-label="sticky table">
-                        <TableHead>
-                            <TableRow>
-                                {columns.map((column) => (
-                                    <StyledTableCell
-                                        key={column.id}
-                                        align={column.align}
-                                        style={{ minWidth: column.minWidth }}
-                                    >
-                                        {column.label}
-                                    </StyledTableCell>
-                                ))}
-                                <StyledTableCell>Actions</StyledTableCell>
-                            </TableRow>
-                        </TableHead>
+                        <EnhancedTableHead
+                            order={order}
+                            orderBy={orderBy}
+                            onRequestSort={handleRequestSort}
+                        />
                         <TableBody>
-                            {filteredHardwares
+                            {sortedHardwares
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((hardware) => {
-                                    return (
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={hardware.ref}>
-                                            {columns.map((column) => {
-                                                const value = hardware[column.id];
-                                                return (
-                                                    <TableCell key={column.id} align={column.align}>
-                                                        {column.id === 'admin' ? (value ? 'Yes' : 'No') : value}
-                                                    </TableCell>
-                                                );
-                                            })}
-                                            <TableCell>
-                                                <Button
-                                                    variant={"contained"}
-                                                    color={"secondary"}
-                                                    onClick={() => handleDetails(hardware.id)}
-                                                >
-                                                    Details
-                                                </Button>
-                                                <IconButton color={"secondary"} onClick={() => handleEditOpen(hardware.id)}>
-                                                    <EditIcon/>
-                                                </IconButton>
-                                                <IconButton color={"secondary"} onClick={() => handleDeleteOpen(hardware.id)}>
-                                                    <DeleteIcon/>
-                                                </IconButton>
-                                            </TableCell>
-                                        </TableRow>
-                                    );
-                                })}
+                                .map((hardware) => (
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={hardware.id}>
+                                        <TableCell>{hardware.ref}</TableCell>
+                                        <TableCell>{hardware.name}</TableCell>
+                                        <TableCell>{hardware.type}</TableCell>
+                                        <TableCell>
+                                            <IconButton color="secondary" onClick={() => handleDetails(hardware.id)}>
+                                                <InfoIcon />
+                                            </IconButton>
+                                            <IconButton color="secondary" onClick={() => handleEditOpen(hardware.id)}>
+                                                <EditIcon />
+                                            </IconButton>
+                                            <IconButton color="secondary" onClick={() => handleDeleteOpen(hardware.id)}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
@@ -305,30 +272,11 @@ function Admin_Hardware() {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleDeleteClose} color="secondary" variant={"contained"}>
+                    <Button onClick={handleDeleteClose} color="secondary" variant="contained">
                         Cancel
                     </Button>
-                    <Button onClick={handleDelete} color="secondary" variant={"contained"} autoFocus>
+                    <Button onClick={handleDelete} color="secondary" variant="contained" autoFocus>
                         Delete
-                    </Button>
-                </DialogActions>
-            </Dialog>
-            <Dialog
-                open={editDialog}
-                onClose={handleEditClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-                sx={{ border: 'solid #9107d6 1px' }}
-            >
-                <DialogTitle id="alert-dialog-title">{"Edit Hardware"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleEditClose} color="secondary" variant={"contained"}>
-                        Back
                     </Button>
                 </DialogActions>
             </Dialog>
