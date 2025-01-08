@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
@@ -9,8 +9,8 @@ import Typography from '@mui/material/Typography';
 import IconButton from "@mui/material/IconButton";
 import HomeIcon from '@mui/icons-material/Home';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import {signOut} from "firebase/auth";
-import {auth} from "../../firebase.js";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebase.js";
 import LogoutIcon from '@mui/icons-material/Logout';
 import './Header.css';
 
@@ -48,10 +48,10 @@ export default function Header({ currentUser }) {
 
     return (
         <AppBar position="fixed" style={{ background: 'black' }}>
-            <Toolbar>
+            <Toolbar sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                 {currentUser && (
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        Salut, {currentUser.email}
+                    <Typography variant="h6" component="div" sx={{ marginRight: 'auto' }}>
+                        Bonjour, {currentUser.email}
                     </Typography>
                 )}
                 <IconButton color="inherit" href="/home"
@@ -63,16 +63,6 @@ export default function Header({ currentUser }) {
                             }}>
                     <HomeIcon/>
                     Home
-                </IconButton>
-                <IconButton color="inherit" onClick={handleDisconnect}
-                            sx={{
-                                transition: 'color 0.3s ease',
-                                '&:hover': {
-                                    color: '#747bff',
-                                },
-                            }}>
-                    <LogoutIcon/>
-                    Disconnect
                 </IconButton>
 
                 {isAdmin && (
@@ -90,6 +80,19 @@ export default function Header({ currentUser }) {
                         Admin
                     </IconButton>
                 )}
+
+                {currentUser && (
+                    <IconButton color="inherit" onClick={handleDisconnect}
+                                sx={{
+                                    transition: 'color 0.3s ease',
+                                    '&:hover': {
+                                        color: '#747bff',
+                                    },
+                                }}>
+                        <LogoutIcon/>
+                        Disconnect
+                    </IconButton>
+                )}
             </Toolbar>
         </AppBar>
     );
@@ -98,5 +101,6 @@ export default function Header({ currentUser }) {
 Header.propTypes = {
     currentUser: PropTypes.shape({
         email: PropTypes.string,
+        uid: PropTypes.string,
     }),
 };
