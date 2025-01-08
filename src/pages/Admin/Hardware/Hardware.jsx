@@ -25,22 +25,18 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import InfoIcon from '@mui/icons-material/Info';
-import {visuallyHidden} from "@mui/utils";
+import { visuallyHidden } from "@mui/utils";
 import PropTypes from "prop-types";
-import {Hardware} from "@mui/icons-material";
-
-
 
 function Admin_Hardware() {
     const [error, setError] = useState(null);
     const [hardwares, setHardwares] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [deleteDialog, setDeleteDialog] = useState(false);
-    const [editDialog, setEditDialog] = useState(false);
     const [selectedHardwareId, setSelectedHardwareId] = useState(null);
 
-    const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState('ref');
+    const [order, setOrder] = useState('asc');
+    const [orderBy, setOrderBy] = useState('ref');
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -81,7 +77,6 @@ function Admin_Hardware() {
     useEffect(() => {
         const fetchHardwares = async () => {
             try {
-                console.log("Fetching hardwares...");
                 const allHardwares = await getDocs(collection(db, "hardware"));
                 const fetchedHardwares = [];
                 allHardwares.forEach((hardware) => {
@@ -92,7 +87,7 @@ function Admin_Hardware() {
                 setError(err.message);
             }
         };
-        fetchHardwares().then(() => console.log("Hardwares fetched!"));
+        fetchHardwares();
     }, []);
 
     const handleDeleteOpen = (id) => {
@@ -105,22 +100,10 @@ function Admin_Hardware() {
         setSelectedHardwareId(null);
     };
 
-    const handleEditOpen = (id) => {
-        setSelectedHardwareId(id);
-        setEditDialog(true);
-    };
-
-    const handleEditClose = () => {
-        setEditDialog(false);
-        setSelectedHardwareId(null);
-    }
-
     const handleDelete = async () => {
         try {
-            // Delete hardware from Firestore
             await deleteDoc(doc(db, "hardware", selectedHardwareId));
             setHardwares(hardwares.filter(hardware => hardware.id !== selectedHardwareId));
-
             handleDeleteClose();
         } catch (err) {
             setError(err.message);
@@ -129,6 +112,10 @@ function Admin_Hardware() {
 
     const handleAddHardware = () => {
         navigate('/admin/hardware/createhardware');
+    };
+
+    const handleEditOpen = (id) => {
+        navigate(`/admin/hardware/edithardware/${id}`);
     };
 
     const handleSearchChange = (event) => {
@@ -154,8 +141,7 @@ function Admin_Hardware() {
     }
 
     function EnhancedTableHead(props) {
-        const { order, orderBy, onRequestSort } =
-            props;
+        const { order, orderBy, onRequestSort } = props;
         const createSortHandler = (property) => (event) => {
             onRequestSort(event, property);
         };
@@ -164,9 +150,7 @@ function Admin_Hardware() {
             <TableHead>
                 <TableRow>
                     {columns.map((column) => (
-                        <StyledTableCell
-                            key={column.id}
-                        >
+                        <StyledTableCell key={column.id}>
                             <TableSortLabel
                                 active={orderBy === column.id}
                                 direction={orderBy === column.id ? order : 'asc'}
@@ -186,9 +170,7 @@ function Admin_Hardware() {
                             </TableSortLabel>
                         </StyledTableCell>
                     ))}
-                    <StyledTableCell>
-                        Actions
-                    </StyledTableCell>
+                    <StyledTableCell>Actions</StyledTableCell>
                 </TableRow>
             </TableHead>
         );
@@ -207,7 +189,7 @@ function Admin_Hardware() {
                 variant="outlined"
                 value={searchQuery}
                 onChange={handleSearchChange}
-                style={{ marginBottom: '20px', width: '100%'   }}
+                style={{ marginBottom: '20px', width: '100%' }}
                 sx={{
                     '& .MuiOutlinedInput-root': {
                         '&:hover fieldset': {
@@ -234,7 +216,6 @@ function Admin_Hardware() {
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                 <TableContainer sx={{ maxHeight: 440 }}>
                     <Table stickyHeader aria-label="sticky table">
-
                         <EnhancedTableHead
                             order={order}
                             orderBy={orderBy}
@@ -243,36 +224,24 @@ function Admin_Hardware() {
                         <TableBody>
                             {sortedHardwares
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((hardware) => {
-                                    return (
-                                        <TableRow hover
-                                                  role="checkbox"
-                                                  tabIndex={-1}
-                                                  key={hardware.id}
-                                        >
-                                            <TableCell>
-                                                {hardware.ref}
-                                            </TableCell>
-                                            <TableCell>
-                                                {hardware.name}
-                                            </TableCell>
-                                            <TableCell>
-                                                {hardware.type}
-                                            </TableCell>
-                                            <TableCell>
-                                                <IconButton color={"secondary"}>
-                                                    <InfoIcon/>
-                                                </IconButton>
-                                                <IconButton color={"secondary"} onClick={() => handleEditOpen(hardware.id)}>
-                                                    <EditIcon/>
-                                                </IconButton>
-                                                <IconButton color={"secondary"} onClick={() => handleDeleteOpen(hardware.id)}>
-                                                    <DeleteIcon/>
-                                                </IconButton>
-                                            </TableCell>
-                                        </TableRow>
-                                    );
-                                })}
+                                .map((hardware) => (
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={hardware.id}>
+                                        <TableCell>{hardware.ref}</TableCell>
+                                        <TableCell>{hardware.name}</TableCell>
+                                        <TableCell>{hardware.type}</TableCell>
+                                        <TableCell>
+                                            <IconButton color="secondary">
+                                                <InfoIcon />
+                                            </IconButton>
+                                            <IconButton color="secondary" onClick={() => handleEditOpen(hardware.id)}>
+                                                <EditIcon />
+                                            </IconButton>
+                                            <IconButton color="secondary" onClick={() => handleDeleteOpen(hardware.id)}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
@@ -299,30 +268,11 @@ function Admin_Hardware() {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleDeleteClose} color="secondary" variant={"contained"}>
+                    <Button onClick={handleDeleteClose} color="secondary" variant="contained">
                         Cancel
                     </Button>
-                    <Button onClick={handleDelete} color="secondary" variant={"contained"} autoFocus>
+                    <Button onClick={handleDelete} color="secondary" variant="contained" autoFocus>
                         Delete
-                    </Button>
-                </DialogActions>
-            </Dialog>
-            <Dialog
-                open={editDialog}
-                onClose={handleEditClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-                sx={{ border: 'solid #9107d6 1px' }}
-            >
-                <DialogTitle id="alert-dialog-title">{"Edit Hardware"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleEditClose} color="secondary" variant={"contained"}>
-                        Retour
                     </Button>
                 </DialogActions>
             </Dialog>

@@ -9,6 +9,7 @@ import Admin_navigation from "./pages/Admin/Navigation/Admin_navigation.jsx";
 import CreateUser from "./pages/Admin/CreateUser/CreateUser.jsx";
 import HardwareList from "./pages/Hardware/HardWareList.jsx";
 import CreateHardware from "./pages/Admin/CreateHardware/CreateHardware.jsx";
+import EditHardware from "./pages/Admin/EditHardware/EditHardware.jsx";
 
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
         <div className="App">
             <Router>
                 <Header/>
-                <Routes>
+                <Routes classname="routes">
                     <Route path="/" element={<Login/>}/>
                     <Route path="/home" element={<Home/>}/>
                     <Route path="/hardware/:id" element={<Hardware/>}/>
@@ -26,6 +27,7 @@ function App() {
                     <Route path="/admin/:tab" element={<Admin_navigation/>}/>
                     <Route path="/admin/users/createuser" element={<CreateUser/>}/>
                     <Route path="/admin/hardware/createhardware" element={<CreateHardware/>}/>
+                    <Route path="/admin/hardware/edithardware/:id" element={<EditHardware/>}/>
                 </Routes>
                 <Footer/>
             </Router>

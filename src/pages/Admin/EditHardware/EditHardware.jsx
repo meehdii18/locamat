@@ -1,12 +1,14 @@
-import { useState } from "react";
-import { doc, getFirestore, setDoc } from "firebase/firestore";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { doc, getDoc, getFirestore, updateDoc } from "firebase/firestore";
 import { Button, Container, TextField, IconButton } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { validateForm } from "../../../hardwareFormValidation.js";
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-
-const CreateHardware = () => {
+const EditHardware = () => {
+    const { id } = useParams();
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
         photo: '',
@@ -14,10 +16,31 @@ const CreateHardware = () => {
         type: '',
         specificAttributes: {}
     });
-
     const [errors, setErrors] = useState({});
     const [attributeKeys, setAttributeKeys] = useState([]);
     const db = getFirestore();
+
+    useEffect(() => {
+        const fetchHardware = async () => {
+            const docRef = doc(db, "hardware", id);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                setFormData({
+                    name: data.name,
+                    photo: data.photo,
+                    ref: data.ref,
+                    type: data.type,
+                    specificAttributes: data.details_specifiques || {}
+                });
+                setAttributeKeys(Object.keys(data.details_specifiques || {}));
+            } else {
+                console.log("No such document!");
+            }
+        };
+
+        fetchHardware();
+    }, [id, db]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -27,14 +50,15 @@ const CreateHardware = () => {
 
         if (Object.keys(newErrors).length === 0) {
             try {
-                await setDoc(doc(db, "hardware", formData.ref), {
+                await updateDoc(doc(db, "hardware", id), {
                     name: formData.name,
                     photo: formData.photo,
                     ref: formData.ref,
                     type: formData.type,
                     details_specifiques: formData.specificAttributes
                 });
-                alert('Hardware created successfully');
+                alert('Hardware updated successfully');
+                navigate("/admin");
             } catch (error) {
                 alert(error.message);
             }
@@ -80,7 +104,7 @@ const CreateHardware = () => {
     return (
         <Container maxWidth="sm" sx={{ mt: 10, mb: 80 }}>
             <Typography variant="h4" component="h1" gutterBottom>
-                Create Hardware
+                Edit Hardware
             </Typography>
             <form onSubmit={handleSubmit}>
                 <TextField
@@ -157,11 +181,11 @@ const CreateHardware = () => {
                     Add Attribute
                 </Button>
                 <Button type="submit" variant="contained" color="secondary" fullWidth>
-                    Create Hardware
+                    Save Hardware
                 </Button>
             </form>
         </Container>
     );
 }
 
-export default CreateHardware;
+export default EditHardware;
