@@ -46,16 +46,13 @@ function Hardware() {
     }
 
     return (
-        <Container className="containerHardware">
+        <Container className="containerHardware" sx={{ mt: 10, mb: 20 }}>
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={6} md={4} className="top-left">
                     <img src={hardwareData.photo} alt="hardwarephoto" />
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} className="bottom-left">
                     <img src={"https://www.calendriergratuit.fr/images/annuel3/calendrier-2025.jpg"} alt="calendar" />
-                </Grid>
-                <Grid item xs={12} sm={6} md={4} className="top-right">
-                    <Typography variant="h1">{hardwareData.name}</Typography>
                 </Grid>
                 <Grid item xs={12} className="bottom-right">
                     <Paper elevation={3} style={{ padding: '16px' }}>
