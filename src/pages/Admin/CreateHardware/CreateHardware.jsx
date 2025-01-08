@@ -57,6 +57,7 @@ const CreateHardware = () => {
                     margin="normal"
                     error={!!errors.name}
                     helperText={errors.name}
+                    color="secondary"
                 />
                 <TextField
                     label="Photo URL"
@@ -67,6 +68,7 @@ const CreateHardware = () => {
                     margin="normal"
                     error={!!errors.photo}
                     helperText={errors.photo}
+                    color="secondary"
                 />
                 <TextField
                     label="Reference"
@@ -77,6 +79,7 @@ const CreateHardware = () => {
                     margin="normal"
                     error={!!errors.ref}
                     helperText={errors.ref}
+                    color="secondary"
                 />
                 <TextField
                     label="Type"
@@ -87,8 +90,9 @@ const CreateHardware = () => {
                     margin="normal"
                     error={!!errors.type}
                     helperText={errors.type}
+                    color="secondary"
                 />
-                <Button type="submit" variant="contained" color="primary" fullWidth>
+                <Button type="submit" variant="contained" color="secondary" fullWidth>
                     Create Hardware
                 </Button>
             </form>

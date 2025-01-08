@@ -60,6 +60,7 @@ const CreateUser = () => {
                     margin="normal"
                     error={!!errors.firstName}
                     helperText={errors.firstName}
+                    color="secondary"
                 />
                 <TextField
                     label="Last Name"
@@ -70,6 +71,7 @@ const CreateUser = () => {
                     margin="normal"
                     error={!!errors.lastName}
                     helperText={errors.lastName}
+                    color="secondary"
                 />
                 <TextField
                     label="Phone Number"
@@ -80,6 +82,7 @@ const CreateUser = () => {
                     margin="normal"
                     error={!!errors.phoneNumber}
                     helperText={errors.phoneNumber}
+                    color="secondary"
                 />
                 <TextField
                     label="Email"
@@ -89,6 +92,7 @@ const CreateUser = () => {
                     fullWidth
                     margin="normal"
                     error={!!errors.email}
+                    color="secondary"
                     helperText={errors.email}
                 />
                 <TextField
@@ -101,14 +105,16 @@ const CreateUser = () => {
                     margin="normal"
                     error={!!errors.password}
                     helperText={errors.password}
+                    color="secondary"
                 />
                 <FormGroup>
                     <FormControlLabel
                         control={<Switch checked={formData.admin} onChange={handleChange} name="admin" />}
                         label="Admin"
+                        color="secondary"
                     />
                 </FormGroup>
-                <Button type="submit" variant="contained" color="primary" fullWidth>
+                <Button type="submit" variant="contained" color="secondary" fullWidth>
                     Create User
                 </Button>
             </form>
