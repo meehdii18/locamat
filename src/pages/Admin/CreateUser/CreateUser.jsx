@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
-import './CreateUser.css';
-import { FormControlLabel, FormGroup, Switch } from "@mui/material";
+import {Button, Container, FormControlLabel, FormGroup, Switch, TextField} from "@mui/material";
 import { validateForm } from "../../../userFormValidation.js";
+import Typography from "@mui/material/Typography";
 
 const CreateUser = () => {
     const [formData, setFormData] = useState({
@@ -46,66 +46,79 @@ const CreateUser = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className={"create-user-form"}>
-            <input
-                type="text"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                placeholder="First Name"
-                style={{ borderColor: errors.firstName ? 'red' : 'black' }}
-            />
-            {errors.firstName && <p>{errors.firstName}</p>}
-
-            <input
-                type="text"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                placeholder="Last Name"
-                style={{ borderColor: errors.lastName ? 'red' : 'black' }}
-            />
-            {errors.lastName && <p>{errors.lastName}</p>}
-
-            <input
-                type="text"
-                name="phoneNumber"
-                value={formData.phoneNumber}
-                onChange={handleChange}
-                placeholder="Phone Number"
-                style={{ borderColor: errors.phoneNumber ? 'red' : 'black' }}
-            />
-            {errors.phoneNumber && <p>{errors.phoneNumber}</p>}
-
-            <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="Email"
-                style={{ borderColor: errors.email ? 'red' : 'black' }}
-            />
-            {errors.email && <p>{errors.email}</p>}
-
-            <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="Password"
-                style={{ borderColor: errors.password ? 'red' : 'black' }}
-            />
-            {errors.password && <p>{errors.password}</p>}
-
-            <FormGroup>
-                <FormControlLabel
-                    control={<Switch checked={formData.admin} onChange={handleChange} name="admin" />}
-                    label="Admin"
+        <Container maxWidth="sm">
+            <Typography variant="h4" component="h1" gutterBottom>
+                Create User
+            </Typography>
+            <form onSubmit={handleSubmit} className={"create-user-form"}>
+                <TextField
+                    label="First Name"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    fullWidth
+                    margin="normal"
+                    error={!!errors.firstName}
+                    helperText={errors.firstName}
+                    color="secondary"
                 />
-            </FormGroup>
-
-            <button type="submit" className="submit-button">Create User</button>
-        </form>
+                <TextField
+                    label="Last Name"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    fullWidth
+                    margin="normal"
+                    error={!!errors.lastName}
+                    helperText={errors.lastName}
+                    color="secondary"
+                />
+                <TextField
+                    label="Phone Number"
+                    name="phoneNumber"
+                    value={formData.phoneNumber}
+                    onChange={handleChange}
+                    fullWidth
+                    margin="normal"
+                    error={!!errors.phoneNumber}
+                    helperText={errors.phoneNumber}
+                    color="secondary"
+                />
+                <TextField
+                    label="Email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    fullWidth
+                    margin="normal"
+                    error={!!errors.email}
+                    color="secondary"
+                    helperText={errors.email}
+                />
+                <TextField
+                    label="Password"
+                    name="password"
+                    type="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    fullWidth
+                    margin="normal"
+                    error={!!errors.password}
+                    helperText={errors.password}
+                    color="secondary"
+                />
+                <FormGroup>
+                    <FormControlLabel
+                        control={<Switch checked={formData.admin} onChange={handleChange} name="admin" />}
+                        label="Admin"
+                        color="secondary"
+                    />
+                </FormGroup>
+                <Button type="submit" variant="contained" color="secondary" fullWidth>
+                    Create User
+                </Button>
+            </form>
+        </Container>
     );
 };
 

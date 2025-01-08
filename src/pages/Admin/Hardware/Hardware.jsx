@@ -19,19 +19,31 @@ import {
     DialogTitle,
     Button,
     IconButton,
-    TextField
+    TextField, TableSortLabel, Box
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
+import InfoIcon from '@mui/icons-material/Info';
+import { visuallyHidden } from "@mui/utils";
+import PropTypes from "prop-types";
 
 function Admin_Hardware() {
     const [error, setError] = useState(null);
     const [hardwares, setHardwares] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [deleteDialog, setDeleteDialog] = useState(false);
-    const [editDialog, setEditDialog] = useState(false);
     const [selectedHardwareId, setSelectedHardwareId] = useState(null);
+
+    const [order, setOrder] = useState('asc');
+    const [orderBy, setOrderBy] = useState('ref');
+
+    const handleRequestSort = (event, property) => {
+        const isAsc = orderBy === property && order === 'asc';
+        setOrder(isAsc ? 'desc' : 'asc');
+        setOrderBy(property);
+    };
+
     const navigate = useNavigate();
 
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -112,8 +124,11 @@ function Admin_Hardware() {
     };
 
     const handleAddHardware = () => {
-        //TODO changer la page de destination
-        navigate('/admin/users/createuser');
+        navigate('/admin/hardware/createhardware');
+    };
+
+    const handleEditOpen = (id) => {
+        navigate(`/admin/hardware/edithardware/${id}`);
     };
 
     const handleSearchChange = (event) => {
@@ -130,9 +145,59 @@ function Admin_Hardware() {
         hardware.type.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    const sortedHardwares = filteredHardwares.sort((a, b) => {
+        if (order === 'asc') {
+            return a[orderBy] < b[orderBy] ? -1 : a[orderBy] > b[orderBy] ? 1 : 0;
+        } else {
+            return a[orderBy] > b[orderBy] ? -1 : a[orderBy] < b[orderBy] ? 1 : 0;
+        }
+    });
+
     if (error) {
         return <p>Erreur : {error}</p>;
     }
+
+    function EnhancedTableHead(props) {
+        const { order, orderBy, onRequestSort } = props;
+        const createSortHandler = (property) => (event) => {
+            onRequestSort(event, property);
+        };
+
+        return (
+            <TableHead>
+                <TableRow>
+                    {columns.map((column) => (
+                        <StyledTableCell key={column.id}>
+                            <TableSortLabel
+                                active={orderBy === column.id}
+                                direction={orderBy === column.id ? order : 'asc'}
+                                onClick={createSortHandler(column.id)}
+                                sx={{
+                                    '&:hover , &.Mui-active , &.Mui-active .MuiTableSortLabel-icon': {
+                                        color: '#ffffff',
+                                    },
+                                }}
+                            >
+                                {column.label}
+                                {orderBy === column.id ? (
+                                    <Box component="span" sx={visuallyHidden}>
+                                        {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                                    </Box>
+                                ) : null}
+                            </TableSortLabel>
+                        </StyledTableCell>
+                    ))}
+                    <StyledTableCell>Actions</StyledTableCell>
+                </TableRow>
+            </TableHead>
+        );
+    }
+
+    EnhancedTableHead.propTypes = {
+        onRequestSort: PropTypes.func.isRequired,
+        order: PropTypes.oneOf(['asc', 'desc']).isRequired,
+        orderBy: PropTypes.string.isRequired,
+    };
 
     return (
         <div>
