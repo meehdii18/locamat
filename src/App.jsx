@@ -1,9 +1,10 @@
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
-import Home from './pages/Home/Home.jsx'
-import Login from './pages/Login/Login.jsx'
-import Hardware from './pages/Hardware/Hardware.jsx'
-import Header from './components/Header/Header.jsx'
+import Home from './pages/Home/Home.jsx';
+import Login from './pages/Login/Login.jsx';
+import Hardware from './pages/Hardware/Hardware.jsx';
+import Header from './components/Header/Header.jsx';
 import Footer from './components/Footer/Footer.jsx';
 import Admin_navigation from "./pages/Admin/Navigation/Admin_navigation.jsx";
 import CreateUser from "./pages/Admin/CreateUser/CreateUser.jsx";
@@ -12,14 +13,34 @@ import Spinner from './components/Spinner/Spinner.jsx';
 import CreateHardware from "./pages/Admin/CreateHardware/CreateHardware.jsx";
 import EditHardware from "./pages/Admin/EditHardware/EditHardware.jsx";
 
-
 function App() {
+    return (
+        <Router>
+            <AppContent />
+        </Router>
+    );
+}
+
+function AppContent() {
+    const [loading, setLoading] = useState(false);
+    const location = useLocation();
+
+    useEffect(() => {
+        setLoading(true);
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, [location]);
 
     return (
         <div className="App">
-            <Router>
-                <Header/>
-                <Routes classname="routes">
+            <Header />
+            {loading ? (
+                <Spinner />
+            ) : (
+                <Routes>
                     <Route path="/" element={<Login/>}/>
                     <Route path="/home" element={<Home/>}/>
                     <Route path="/hardware/:id" element={<Hardware/>}/>
@@ -30,8 +51,8 @@ function App() {
                     <Route path="/admin/hardware/createhardware" element={<CreateHardware/>}/>
                     <Route path="/admin/hardware/edithardware/:id" element={<EditHardware/>}/>
                 </Routes>
-                <Footer/>
-            </Router>
+            )}
+            <Footer />
         </div>
     );
 }
