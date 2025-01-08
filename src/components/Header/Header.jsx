@@ -51,7 +51,7 @@ export default function Header({ currentUser }) {
             <Toolbar sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                 {currentUser && (
                     <Typography variant="h6" component="div" sx={{ marginRight: 'auto' }}>
-                        Salut, {currentUser.email}
+                        Bonjour, {currentUser.email}
                     </Typography>
                 )}
                 <IconButton color="inherit" href="/home"
@@ -81,16 +81,18 @@ export default function Header({ currentUser }) {
                     </IconButton>
                 )}
 
-                <IconButton color="inherit" onClick={handleDisconnect}
-                            sx={{
-                                transition: 'color 0.3s ease',
-                                '&:hover': {
-                                    color: '#747bff',
-                                },
-                            }}>
-                    <LogoutIcon/>
-                    Disconnect
-                </IconButton>
+                {currentUser && (
+                    <IconButton color="inherit" onClick={handleDisconnect}
+                                sx={{
+                                    transition: 'color 0.3s ease',
+                                    '&:hover': {
+                                        color: '#747bff',
+                                    },
+                                }}>
+                        <LogoutIcon/>
+                        Disconnect
+                    </IconButton>
+                )}
             </Toolbar>
         </AppBar>
     );
@@ -99,5 +101,6 @@ export default function Header({ currentUser }) {
 Header.propTypes = {
     currentUser: PropTypes.shape({
         email: PropTypes.string,
+        uid: PropTypes.string,
     }),
 };
