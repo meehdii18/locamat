@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { Container, Grid, Typography, Paper, Box, Button, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import LocalMallIcon from '@mui/icons-material/LocalMall';
+import Booking from './Booking';
 import './Hardware.css';
 
 function Hardware() {
@@ -82,16 +83,11 @@ function Hardware() {
                     </Paper>
                 </Grid>
             </Grid>
-            <Dialog open={dialogOpen} onClose={handleDialogClose}>
+            <Dialog open={dialogOpen} onClose={handleDialogClose} maxWidth="md" fullWidth sx={{ '& .MuiDialog-paper': { height: '50vh', width: '20vw' } }}>
                 <DialogTitle>Book Hardware</DialogTitle>
                 <DialogContent>
-                    {/* TODO : Ajouter ici le futur composant booking  */}
+                    <Booking onClose={handleDialogClose} />
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleDialogClose} color="secondary" variant="contained">
-                        Close
-                    </Button>
-                </DialogActions>
             </Dialog>
         </Container>
     );
