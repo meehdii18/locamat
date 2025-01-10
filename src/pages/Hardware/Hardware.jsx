@@ -1,31 +1,25 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
 import { useFirebase } from "../../FirebaseContext.jsx";
 import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
-import { Container, Grid, Typography, Paper, Box } from "@mui/material";
-import './Hardware.css';
-
+import { Container, Grid, Typography, Paper, Box, Button } from "@mui/material";
+import LocalMallIcon from '@mui/icons-material/LocalMall';
 import './Hardware.css';
 
 function Hardware() {
-
     const { db } = useFirebase();
-
-
-
-    const { id } = useParams(); // Fetch the id from the url
+    const { id } = useParams();
     const [hardwareData, setHardwareData] = useState(null);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const docRef = doc(db, "hardware", id); // Path to the hardware document
-                const docSnap = await getDoc(docRef); // Get the document
+                const docRef = doc(db, "hardware", id);
+                const docSnap = await getDoc(docRef);
 
                 if (docSnap.exists()) {
-                    setHardwareData({id: docSnap.id, ...docSnap.data()});
+                    setHardwareData({ id: docSnap.id, ...docSnap.data() });
                 } else {
                     setError("This hardware does not exist.");
                 }
@@ -47,30 +41,25 @@ function Hardware() {
 
     return (
         <Container className="containerHardware" sx={{ mt: 10, mb: 20 }}>
-            <Grid container spacing={2}>
-                <Grid item xs={12} sm={6} md={4} className="top-left">
-                    <img src={hardwareData.photo} alt="hardwarephoto" />
+            <Grid container spacing={3}>
+                <Grid item xs={12} className="image-container">
+                    <img src={hardwareData.photo} alt="hardwarephoto" className="hardware-image" />
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} className="bottom-left">
-                    <img src={"https://www.calendriergratuit.fr/images/annuel3/calendrier-2025.jpg"} alt="calendar" />
-                </Grid>
-                <Grid item xs={12} className="bottom-right">
-                    <Paper elevation={3} style={{ padding: '16px' }}>
-                        <Typography variant="body1">
-                            <strong>Nom :</strong>
-                            <span>{hardwareData.name}</span>
+                <Grid item xs={12} className="details-container">
+                    <Paper elevation={3} className="details-paper">
+                        <Typography variant="h5" className="hardware-name">
+                            {hardwareData.name}
                         </Typography>
-                        <Typography variant="body1">
-                            <strong>Référence :</strong>
-                            <span>{hardwareData.ref}</span>
+                        <Typography variant="body1" className="hardware-ref">
+                            <strong>Référence :</strong> {hardwareData.ref}
                         </Typography>
                         <Box mt={2}>
-                            <Typography variant="h2">Specific attributes</Typography>
+                            <Typography variant="h6">Specific attributes</Typography>
                             {hardwareData.details_specifiques ? (
-                                <ul>
+                                <ul className="attributes-list">
                                     {Object.entries(hardwareData.details_specifiques).map(([key, value]) => (
                                         <li key={key}>
-                                            <strong>{key} :</strong> {value}
+                                            <strong>{key} :</strong> {String(value)}
                                         </li>
                                     ))}
                                 </ul>
@@ -78,6 +67,9 @@ function Hardware() {
                                 <Typography variant="body1">Aucun détail spécifique trouvé.</Typography>
                             )}
                         </Box>
+                        <Button variant="contained" color="secondary" startIcon={<LocalMallIcon />} className="book-button">
+                            Book
+                        </Button>
                     </Paper>
                 </Grid>
             </Grid>

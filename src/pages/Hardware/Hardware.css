@@ -3,58 +3,73 @@
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    padding-top: 100px;
+    padding-top: 70px;
     max-width: 1200px;
     margin: 0 auto;
     font-family: Arial, sans-serif;
-    background-color: #f3f3f3;
     border-radius: 10px;
-    box-shadow: 0 10px 100px rgba(0, 0, 0, 0.2);
 }
 
-.top-left {
+.image-container {
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: #fff;
-    border-radius: 10px;
+    border-radius: 5px;
     padding: 20px;
-    margin-bottom: 20px;
+    box-shadow: 0 10px 100px rgba(0, 0, 0, 0.1);
 }
 
-.top-left img {
-    max-width: 100%;
-    max-height: 400px;
+.hardware-image {
+    max-width: 90%;
+    max-height: 360px;
     object-fit: contain;
 }
 
-.top-right {
-    background-color: #fff;
-    border-radius: 10px;
+.details-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 20px;
     padding: 20px;
-    margin-bottom: 20px;
+    width: 100%;
 }
 
-.top-right h1 {
+.details-paper {
+    padding: 20px;
+    width: 100%;
+    border-radius: 20px;
+}
+
+.hardware-name {
     font-size: 1.8rem;
     color: #333;
     margin-bottom: 10px;
 }
 
-.top-right p {
+.hardware-ref {
     font-size: 1rem;
     color: #555;
     margin: 5px 0;
 }
 
-.top-right .price {
-    font-size: 1.5rem;
-    color: #b12704;
-    margin: 20px 0;
+.attributes-list {
+    list-style: none;
+    padding: 0;
 }
 
-.top-right button {
-    background-color: #ffa41c;
+.attributes-list li {
+    font-size: 1rem;
+    color: #555;
+    margin: 10px 0;
+}
+
+.attributes-list li strong {
+    color: #333;
+}
+
+.book-button {
+    position: absolute;
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -64,53 +79,6 @@
     transition: background-color 0.3s ease;
 }
 
-.top-right button:hover {
-    background-color: #cc8500;
-}
-
-.bottom-right {
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-.bottom-right h2 {
-    font-size: 1.5rem;
-    color: #333;
-    margin-bottom: 15px;
-    padding-bottom: 5px;
-}
-
-.bottom-right ul {
-    list-style: none;
-    padding: 0;
-}
-
-.bottom-right li {
-    font-size: 1rem;
-    color: #555;
-    margin: 10px 0;
-}
-
-.bottom-right li strong {
-    color: #333;
-}
-
-.bottom-right p {
-    display: flex;
-    padding: 8px 0;
-    color: #555;
-}
-
-.bottom-right p strong {
-    font-size: 1rem;
-    color: #333;
-    margin-right: 10px;
-}
-
-.bottom-left {
-    border-radius: 10px;
-    padding: 10px;
-    margin-bottom: 20px;
+.book-button:hover {
+    background-color: purple;
 }
