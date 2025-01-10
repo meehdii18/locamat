@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useFirebase } from "../../FirebaseContext.jsx";
 import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
-import { Container, Grid, Typography, Paper, Box, Button } from "@mui/material";
+import { Container, Grid, Typography, Paper, Box, Button, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import './Hardware.css';
 
@@ -11,6 +11,7 @@ function Hardware() {
     const { id } = useParams();
     const [hardwareData, setHardwareData] = useState(null);
     const [error, setError] = useState(null);
+    const [dialogOpen, setDialogOpen] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -30,6 +31,14 @@ function Hardware() {
 
         fetchData();
     }, [id, db]);
+
+    const handleDialogOpen = () => {
+        setDialogOpen(true);
+    };
+
+    const handleDialogClose = () => {
+        setDialogOpen(false);
+    };
 
     if (error) {
         return <div>{error}</div>;
@@ -67,12 +76,23 @@ function Hardware() {
                                 <Typography variant="body1">Aucun détail spécifique trouvé.</Typography>
                             )}
                         </Box>
-                        <Button variant="contained" color="secondary" startIcon={<LocalMallIcon />} className="book-button">
+                        <Button variant="contained" color="secondary" startIcon={<LocalMallIcon />} className="book-button" onClick={handleDialogOpen}>
                             Book
                         </Button>
                     </Paper>
                 </Grid>
             </Grid>
+            <Dialog open={dialogOpen} onClose={handleDialogClose}>
+                <DialogTitle>Book Hardware</DialogTitle>
+                <DialogContent>
+                    {/* TODO : Ajouter ici le futur composant booking  */}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDialogClose} color="secondary" variant="contained">
+                        Close
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Container>
     );
 }
