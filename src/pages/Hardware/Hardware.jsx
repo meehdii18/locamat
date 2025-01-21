@@ -86,7 +86,7 @@ function Hardware() {
             <Dialog open={dialogOpen} onClose={handleDialogClose} maxWidth="md" fullWidth sx={{ '& .MuiDialog-paper': { height: '50vh', width: '20vw' } }}>
                 <DialogTitle>Book Hardware</DialogTitle>
                 <DialogContent>
-                    <Booking onClose={handleDialogClose} />
+                    <Booking onClose={handleDialogClose} hardwareId={hardwareData.ref}/>
                 </DialogContent>
             </Dialog>
         </Container>
