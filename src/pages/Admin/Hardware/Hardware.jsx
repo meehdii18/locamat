@@ -15,11 +15,10 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
-    DialogContentText,
     DialogTitle,
     Button,
     IconButton,
-    TextField, TableSortLabel, Box
+    TextField, TableSortLabel, Box, DialogContentText
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -28,6 +27,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { visuallyHidden } from "@mui/utils";
 import PropTypes from "prop-types";
+import './Hardware.css';
 
 function Admin_Hardware() {
     const [error, setError] = useState(null);
@@ -35,6 +35,8 @@ function Admin_Hardware() {
     const [searchQuery, setSearchQuery] = useState("");
     const [deleteDialog, setDeleteDialog] = useState(false);
     const [selectedHardwareId, setSelectedHardwareId] = useState(null);
+    const [calendarDialog, setCalendarDialog] = useState(false);
+    const [reservations, setReservations] = useState([]);
 
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('ref');
@@ -123,8 +125,15 @@ function Admin_Hardware() {
         navigate(`/admin/hardware/edithardware/${id}`);
     };
 
-    const handleCalendar = (id) => {
-        navigate(`/admin/hardware/calendar/${id}`);
+    const handleCalendar = async (id) => {
+        setSelectedHardwareId(id);
+        await fetchReservations(id);
+        setCalendarDialog(true);
+    };
+
+    const handleCalendarClose = () => {
+        setCalendarDialog(false);
+        setSelectedHardwareId(null);
     };
 
     const handleSearchChange = (event) => {
@@ -191,6 +200,21 @@ function Admin_Hardware() {
         orderBy: PropTypes.string.isRequired,
     };
 
+    const fetchReservations = async (id) => {
+        try {
+            const reservationsSnapshot = await getDocs(collection(db, "booking"));
+            const fetchedReservations = reservationsSnapshot.docs
+                .filter(doc => doc.data().hardwareId === id)
+                .map(doc => ({
+                    ...doc.data(),
+                    startDate: doc.data().startDate.toDate(),
+                    endDate: doc.data().endDate.toDate()
+                }));
+            setReservations(fetchedReservations);
+        } catch (err) {
+            setError(err.message);
+        }
+    };
     return (
         <div>
             <TextField
@@ -286,6 +310,33 @@ function Admin_Hardware() {
                     </Button>
                     <Button onClick={handleDelete} color="secondary" variant="contained" autoFocus>
                         Delete
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <Dialog
+                open={calendarDialog}
+                onClose={handleCalendarClose}
+                maxWidth="md"
+                fullWidth
+                sx={{ '& .MuiDialog-paper': { height: '50vh', width: '20vw' } }}
+            >
+                <DialogTitle>Bookings</DialogTitle>
+                <DialogContent>
+                    {reservations.length > 0 ? (
+                        <ul>
+                            {reservations.map((reservation, index) => (
+                                <li key={index}>
+                                    {`Start: ${reservation.startDate.toLocaleDateString()} - End: ${reservation.endDate.toLocaleDateString()}`}
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>No reservations found.</p>
+                    )}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCalendarClose} color="secondary" variant="contained">
+                        Close
                     </Button>
                 </DialogActions>
             </Dialog>
