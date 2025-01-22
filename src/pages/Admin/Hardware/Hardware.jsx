@@ -25,6 +25,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import InfoIcon from '@mui/icons-material/Info';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { visuallyHidden } from "@mui/utils";
 import PropTypes from "prop-types";
 
@@ -120,6 +121,10 @@ function Admin_Hardware() {
 
     const handleEditOpen = (id) => {
         navigate(`/admin/hardware/edithardware/${id}`);
+    };
+
+    const handleCalendar = (id) => {
+        navigate(`/admin/hardware/calendar/${id}`);
     };
 
     const handleSearchChange = (event) => {
@@ -237,6 +242,9 @@ function Admin_Hardware() {
                                             <IconButton color="secondary" onClick={() => handleDetails(hardware.id)}>
                                                 <InfoIcon />
                                             </IconButton>
+                                            <IconButton color="secondary" onClick={() => handleCalendar(hardware.id)}>
+                                                <CalendarMonthIcon />
+                                            </IconButton>
                                             <IconButton color="secondary" onClick={() => handleEditOpen(hardware.id)}>
                                                 <EditIcon />
                                             </IconButton>
@@ -245,6 +253,7 @@ function Admin_Hardware() {
                                             </IconButton>
                                         </TableCell>
                                     </TableRow>
+
                                 ))}
                         </TableBody>
                     </Table>
