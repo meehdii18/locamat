@@ -6,6 +6,7 @@ import './Home.css';
 import LoginForm from "../../components/LoginForm/LoginForm.jsx";
 import Header from "../../components/Header/Header.jsx";
 import Footer from "../../components/Footer/Footer.jsx";
+import Spinner from "../../components/Spinner/Spinner.jsx";
 import { getDocs, collection, query, where, limit } from 'firebase/firestore';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -17,6 +18,7 @@ import { Link } from 'react-router-dom';
 function Home() {
     const { db } = useFirebase();
     const [currentUser, setCurrentUser] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [data, setData] = useState([]);
 
@@ -27,6 +29,7 @@ function Home() {
             } else {
                 setCurrentUser(null);
             }
+            setLoading(false);
         });
 
         return () => unsubscribe();
@@ -65,6 +68,10 @@ function Home() {
 
         fetchData();
     }, [data]);
+
+    if (loading) {
+        return <Spinner />;
+    }
 
     if (error) {
         return <p>Erreur : {error}</p>;
