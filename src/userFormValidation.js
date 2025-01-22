@@ -1,4 +1,3 @@
-// src/validation.js
 export const validateForm = (formData) => {
     let newErrors = {};
 
@@ -6,12 +5,12 @@ export const validateForm = (formData) => {
         newErrors.email = "Email must be of type xxx@locamat.fr";
     }
 
-    if (!/^[a-zA-Z0-9-]{1,30}$/.test(formData.firstName)) {
-        newErrors.firstName = "First name must be alphanumeric and between 1-30 characters";
+    if (!/^[a-zA-ZÀ-ÿ0-9-]{1,30}$/.test(formData.firstName)) {
+        newErrors.firstName = "First name must be alphanumeric, can include hyphens and accents, and be between 1-30 characters";
     }
 
-    if (!/^[a-zA-Z0-9-]{1,30}$/.test(formData.lastName)) {
-        newErrors.lastName = "Last name must be alphanumeric and between 1-30 characters";
+    if (!/^[a-zA-ZÀ-ÿ0-9-]{1,30}$/.test(formData.lastName)) {
+        newErrors.lastName = "Last name must be alphanumeric, can include hyphens and accents, and be between 1-30 characters";
     }
 
     if (!/^\d{10}$/.test(formData.phoneNumber)) {
