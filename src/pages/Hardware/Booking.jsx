@@ -67,6 +67,11 @@ const Booking = ({ onClose, hardwareId, onSuccess }) => {
     };
 
     const handleConfirm = async () => {
+        if (formData.endDate <= formData.startDate) {
+            setError("End date must be after start date.");
+            return;
+        }
+
         try {
             const conflict = await checkBookingConflict(formData.startDate, formData.endDate, formData.hardware);
             if (conflict) {
