@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useFirebase } from "../../FirebaseContext.jsx";
 import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
-import { Container, Grid, Typography, Paper, Box, Button, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
+import { Container, Grid, Typography, Paper, Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, Alert } from "@mui/material";
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import Booking from './Booking';
 import './Hardware.css';
@@ -13,6 +13,7 @@ function Hardware() {
     const [hardwareData, setHardwareData] = useState(null);
     const [error, setError] = useState(null);
     const [dialogOpen, setDialogOpen] = useState(false);
+    const [success, setSuccess] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -41,6 +42,11 @@ function Hardware() {
         setDialogOpen(false);
     };
 
+    const handleBookingSuccess = (message) => {
+        setSuccess(message);
+        setDialogOpen(false);
+    };
+
     if (error) {
         return <div>{error}</div>;
     }
@@ -52,6 +58,7 @@ function Hardware() {
     return (
         <Container className="containerHardware" sx={{ mt: 10, mb: 20 }}>
             <Grid container spacing={3}>
+                {success && <Alert severity="success">{success}</Alert>}
                 <Grid item xs={12} className="image-container">
                     <img src={hardwareData.photo} alt="hardwarephoto" className="hardware-image" />
                 </Grid>
@@ -86,7 +93,7 @@ function Hardware() {
             <Dialog open={dialogOpen} onClose={handleDialogClose} maxWidth="md" fullWidth sx={{ '& .MuiDialog-paper': { height: '50vh', width: '20vw' } }}>
                 <DialogTitle>Book Hardware</DialogTitle>
                 <DialogContent>
-                    <Booking onClose={handleDialogClose} hardwareId={hardwareData.ref}/>
+                    <Booking onClose={handleDialogClose} hardwareId={hardwareData.ref} onSuccess={handleBookingSuccess} />
                 </DialogContent>
             </Dialog>
         </Container>

@@ -1,19 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Button, Box, Typography } from '@mui/material';
-import {db} from "../../firebase.js";
-import {doc, setDoc} from "firebase/firestore";
-import {auth} from "../../firebase.js";
+import { Button, Box, Typography, Alert } from '@mui/material';
+import { db, auth } from "../../firebase.js";
+import { doc, setDoc } from "firebase/firestore";
 import PropTypes from "prop-types";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
-const Booking = ({ onClose, hardwareId }) => {
+const Booking = ({ onClose, hardwareId, onSuccess }) => {
     const [formData, setFormData] = useState({
         startDate: new Date(),
         endDate: new Date(),
         hardware: hardwareId,
         user: auth.currentUser.uid,
     });
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        if (auth.currentUser) {
+            setFormData((prevData) => ({
+                ...prevData,
+                user: auth.currentUser.uid,
+            }));
+        }
+    }, []);
 
     const handleStartDateChange = (date) => {
         setFormData({ ...formData, startDate: date });
@@ -23,26 +33,45 @@ const Booking = ({ onClose, hardwareId }) => {
         setFormData({ ...formData, endDate: date });
     };
 
-    const handleConfirm = async () => {
-        // TODO : Ajouter la vérification de la faisabilité de la reservation
+    const checkBookingConflict = async (startDate, endDate, hardwareId) => {
+        const bookingsRef = collection(db, "booking");
+        const q = query(
+            bookingsRef,
+            where("hardwareId", "==", hardwareId),
+            where("startDate", "<=", endDate),
+            where("endDate", ">=", startDate)
+        );
 
-        // TODO : Ajouter la création de la réservation dans firebase ici
+        const querySnapshot = await getDocs(q);
+        return !querySnapshot.empty;
+    };
+
+    const handleConfirm = async () => {
         try {
-            await setDoc(doc(db, "booking", formData.ref), {
+            const conflict = await checkBookingConflict(formData.startDate, formData.endDate, formData.hardware);
+            if (conflict) {
+                setError("Booking conflict detected. Please choose different dates.");
+                return;
+            }
+
+            await setDoc(doc(db, "booking", `${formData.user}_${formData.hardware}_${formData.startDate.getTime()}`), {
                 startDate: formData.startDate,
                 endDate: formData.endDate,
-                hardwareId: 'hardwareId', //TODO : Remplacer par l'id du hardware
-                userId: 'userId', //TODO : Remplacer par l'id de l'utilisateur
+                hardwareId: formData.hardware,
+                userId: formData.user,
             });
-            alert('Booking confirmed from', formData.startDate, 'to', formData.endDate)
+            console.log(`Booking confirmed from ${formData.startDate} to ${formData.endDate}`);
+            setError(null);
+            onSuccess("Booking confirmed successfully!");
         } catch (error) {
-            alert(error.message);
+            setError(error.message);
         }
         onClose();
     };
 
     return (
         <Box display="flex" flexDirection="column" alignItems="center">
+            {error && <Alert severity="error">{error}</Alert>}
             <Typography variant="h6" gutterBottom>
                 Start Date
             </Typography>
@@ -84,5 +113,6 @@ export default Booking;
 
 Booking.propTypes = {
     onClose: PropTypes.func.isRequired,
-    hardwareId: PropTypes.string.isRequired,
-}
+    hardwareId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    onSuccess: PropTypes.func.isRequired,
+};
