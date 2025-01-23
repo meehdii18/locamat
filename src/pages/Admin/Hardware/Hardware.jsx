@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../../../firebase.js";
-import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
+import { collection, getDocs, deleteDoc, doc, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import {
     Paper,
@@ -10,7 +10,8 @@ import {
     TableCell,
     tableCellClasses,
     TableContainer,
-    TableHead, TablePagination,
+    TableHead,
+    TablePagination,
     TableRow,
     Dialog,
     DialogActions,
@@ -18,7 +19,10 @@ import {
     DialogTitle,
     Button,
     IconButton,
-    TextField, TableSortLabel, Box, DialogContentText
+    TextField,
+    TableSortLabel,
+    Box,
+    DialogContentText
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -37,6 +41,8 @@ function Admin_Hardware() {
     const [selectedHardwareId, setSelectedHardwareId] = useState(null);
     const [calendarDialog, setCalendarDialog] = useState(false);
     const [reservations, setReservations] = useState([]);
+    const [selectedBooking, setSelectedBooking] = useState(null);
+    const [bookingDialog, setBookingDialog] = useState(false);
 
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('ref');
@@ -127,7 +133,7 @@ function Admin_Hardware() {
 
     const handleCalendar = async (id) => {
         setSelectedHardwareId(id);
-        await fetchReservations(id);
+        await fetchBooking(id);
         setCalendarDialog(true);
     };
 
@@ -200,21 +206,52 @@ function Admin_Hardware() {
         orderBy: PropTypes.string.isRequired,
     };
 
-    const fetchReservations = async (id) => {
+    const fetchBooking = async (id) => {
         try {
-            const reservationsSnapshot = await getDocs(collection(db, "booking"));
-            const fetchedReservations = reservationsSnapshot.docs
-                .filter(doc => doc.data().hardwareId === id)
-                .map(doc => ({
-                    ...doc.data(),
-                    startDate: doc.data().startDate.toDate(),
-                    endDate: doc.data().endDate.toDate()
-                }));
-            setReservations(fetchedReservations);
+            console.log("Fetching bookings for id: ", id);
+            const hardwareRef = (await getDoc(doc(db, "hardware", id))).data().ref;
+            const allBookings = await getDocs(collection(db, "booking"));
+            const fetchedBookings = [];
+            allBookings.forEach((booking) => {
+                if (booking.data().hardwareId === hardwareRef) {
+                    const data = booking.data();
+                    const startDate = new Date(data.startDate);
+                    const endDate = new Date(data.endDate);
+                    fetchedBookings.push({
+                        id: booking.id,
+                        ...data,
+                        startDate,
+                        endDate
+                    });
+                }
+            });
+            setReservations(fetchedBookings);
+            console.log("Bookings fetched!");
         } catch (err) {
             setError(err.message);
         }
     };
+
+    const handleDateSelect = (date) => {
+        const booking = reservations.find(reservation => {
+            const startDate = new Date(reservation.startDate);
+            const endDate = new Date(reservation.endDate);
+            return date >= startDate && date <= endDate;
+        });
+
+        if (booking) {
+            setSelectedBooking(booking);
+            setBookingDialog(true);
+        } else {
+            console.log("No booking found for the selected date.");
+        }
+    };
+
+    const handleBookingDialogClose = () => {
+        setBookingDialog(false);
+        setSelectedBooking(null);
+    };
+
     return (
         <div>
             <TextField
@@ -318,24 +355,58 @@ function Admin_Hardware() {
                 onClose={handleCalendarClose}
                 maxWidth="md"
                 fullWidth
-                sx={{ '& .MuiDialog-paper': { height: '50vh', width: '20vw' } }}
+                sx={{ '& .MuiDialog-paper': { height: '50vh', width: '50vw' } }}
             >
                 <DialogTitle>Bookings</DialogTitle>
                 <DialogContent>
-                    {reservations.length > 0 ? (
-                        <ul>
-                            {reservations.map((reservation, index) => (
-                                <li key={index}>
-                                    {`Start: ${reservation.startDate.toLocaleDateString()} - End: ${reservation.endDate.toLocaleDateString()}`}
-                                </li>
-                            ))}
-                        </ul>
-                    ) : (
-                        <p>No reservations found.</p>
-                    )}
+                    <TableContainer>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Hardware ID</TableCell>
+                                    <TableCell>Start Date</TableCell>
+                                    <TableCell>End Date</TableCell>
+                                    <TableCell>Booked By</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {reservations.map((reservation) => (
+                                    <TableRow key={reservation.id} onClick={() => handleDateSelect(new Date(reservation.startDate))}>
+                                        <TableCell>{reservation.hardwareId}</TableCell>
+                                        <TableCell>{new Date(reservation.startDate).toDateString()}</TableCell>
+                                        <TableCell>{new Date(reservation.endDate).toDateString()}</TableCell>
+                                        <TableCell>{reservation.userId}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCalendarClose} color="secondary" variant="contained">
+                        Close
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <Dialog
+                open={bookingDialog}
+                onClose={handleBookingDialogClose}
+                aria-labelledby="booking-dialog-title"
+                aria-describedby="booking-dialog-description"
+            >
+                <DialogTitle id="booking-dialog-title">Booking Details</DialogTitle>
+                <DialogContent>
+                    {selectedBooking && (
+                        <div>
+                            <p><strong>Hardware ID:</strong> {selectedBooking.hardwareId}</p>
+                            <p><strong>Start Date:</strong> {selectedBooking.startDate.toDateString()}</p>
+                            <p><strong>End Date:</strong> {selectedBooking.endDate.toDateString()}</p>
+                            <p><strong>Booked By:</strong> {selectedBooking.userId}</p>
+                        </div>
+                    )}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleBookingDialogClose} color="secondary" variant="contained">
                         Close
                     </Button>
                 </DialogActions>
