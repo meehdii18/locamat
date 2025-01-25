@@ -30,3 +30,9 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run build --if-present
+    - run : npm install -g selenium-side-runner
+    - run: npm install -g chromedriver
+    - name: Run Selenium IDE tests
+      run: selenium-side-runner src/tests/selenium/LocaMat.side src/tests/selenium/LocaMatV2.side
+      
+    
