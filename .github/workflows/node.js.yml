@@ -31,6 +31,10 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run : npm install -g selenium-side-runner
+    - name: Install Chrome
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y google-chrome-stable
     - run: npm install -g chromedriver
     - name: Run Selenium IDE tests
       run: selenium-side-runner src/tests/selenium/connexionUser.js src/tests/selenium/homePage.spec.js src/tests/selenium/activitutilisateurclassique.spec.js src/tests/selenium/admincreatenewuser.spec.js src/tests/selenium/adminonhardware.spec.js src/tests/selenium/adminupdateuser.spec.js  
