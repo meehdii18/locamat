@@ -1,0 +1,416 @@
+{
+  "id": "35789881-945d-453f-91d5-f9641b170a17",
+  "version": "2.0",
+  "name": "LocaMatV2",
+  "url": "https://locamat.ninja",
+  "tests": [{
+    "id": "859a6390-443f-456f-8990-28e33f94c054",
+    "name": "Activité utilisateur classique",
+    "commands": [{
+      "id": "1625843d-ed6b-435e-a3e0-5f97517e9556",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "a291106a-e49f-4a4b-930f-f3b5c71d7029",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1215x735",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "8d4c5878-952f-433a-b3ea-4cef428c58c5",
+      "comment": "",
+      "command": "click",
+      "target": "id=:r2:",
+      "targets": [
+        ["id=:r2:", "id"],
+        ["name=email", "name"],
+        ["css=#\\3Ar2\\3A", "css:finder"],
+        ["xpath=//input[@id=':r2:']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div[2]/form/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "900c046c-121c-41ab-a4f2-ae3d32fc0588",
+      "comment": "",
+      "command": "type",
+      "target": "id=:r2:",
+      "targets": [
+        ["id=:r2:", "id"],
+        ["name=email", "name"],
+        ["css=#\\3Ar2\\3A", "css:finder"],
+        ["xpath=//input[@id=':r2:']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div[2]/form/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "test@locamat.fr"
+    }, {
+      "id": "e4fdd80b-f41d-4462-bdc0-f78de0e9c0d0",
+      "comment": "",
+      "command": "click",
+      "target": "id=:r3:",
+      "targets": [
+        ["id=:r3:", "id"],
+        ["name=password", "name"],
+        ["css=#\\3Ar3\\3A", "css:finder"],
+        ["xpath=//input[@id=':r3:']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div[2]/form/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a1854b93-f637-4c80-9345-c4393043a884",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.MuiButton-root",
+      "targets": [
+        ["css=.MuiButton-root", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div[2]/form/button", "xpath:idRelative"],
+        ["xpath=//form/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "fa8a2a50-4590-43d8-a7ba-53236b896a0f",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.MuiButton-root",
+      "targets": [
+        ["css=.MuiButton-root", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div[2]/form/button", "xpath:idRelative"],
+        ["xpath=//form/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "484a7a4f-d380-4251-92fb-c319ce229020",
+      "comment": "",
+      "command": "type",
+      "target": "id=:r3:",
+      "targets": [
+        ["id=:r3:", "id"],
+        ["name=password", "name"],
+        ["css=#\\3Ar3\\3A", "css:finder"],
+        ["xpath=//input[@id=':r3:']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div[2]/form/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "Test123@"
+    }, {
+      "id": "b08400ba-78ce-4b91-b924-55b47a742cb0",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-root",
+      "targets": [
+        ["css=.MuiButton-root", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div[2]/form/button", "xpath:idRelative"],
+        ["xpath=//form/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3bda4c3d-197d-44b8-8455-c0c99a7c84f3",
+      "comment": "",
+      "command": "click",
+      "target": "css=.material-card:nth-child(1) .MuiButtonBase-root",
+      "targets": [
+        ["css=.material-card:nth-child(1) .MuiButtonBase-root", "css:finder"],
+        ["xpath=//a[contains(text(),'Voir plus')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/main/section/div/div/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/hardware-list/Smartphone')]", "xpath:href"],
+        ["xpath=//div/div/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "fd34e298-a2a0-4270-b165-7d9830cac9cf",
+      "comment": "",
+      "command": "click",
+      "target": "css=.cardHardware:nth-child(2) .imgHardware",
+      "targets": [
+        ["css=.cardHardware:nth-child(2) .imgHardware", "css:finder"],
+        ["xpath=//img[@alt=\"Image de l'équipement phone1\"]", "xpath:img"],
+        ["xpath=//div[@id='root']/div/div/div[2]/a/img", "xpath:idRelative"],
+        ["xpath=//div[2]/a/img", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "78177e7d-ba88-4a8a-8c58-54b6fda442ac",
+      "comment": "",
+      "command": "type",
+      "target": "id=:r2:",
+      "targets": [
+        ["id=:r2:", "id"],
+        ["name=email", "name"],
+        ["css=#\\3Ar2\\3A", "css:finder"],
+        ["xpath=//input[@id=':r2:']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div[2]/form/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "test@locamat.fr"
+    }, {
+      "id": "185fec61-c023-46b3-ae79-46e5303927e5",
+      "comment": "",
+      "command": "type",
+      "target": "id=:r3:",
+      "targets": [
+        ["id=:r3:", "id"],
+        ["name=password", "name"],
+        ["css=#\\3Ar3\\3A", "css:finder"],
+        ["xpath=//input[@id=':r3:']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div[2]/form/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "Test123@"
+    }, {
+      "id": "91726754-8992-4bb3-8718-d07a23296506",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-root",
+      "targets": [
+        ["css=.MuiButton-root", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div[2]/form/button", "xpath:idRelative"],
+        ["xpath=//form/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4b665a90-0fdf-4bea-9725-794b198a70a9",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButtonBase-root:nth-child(3)",
+      "targets": [
+        ["css=.MuiButtonBase-root:nth-child(3)", "css:finder"],
+        ["xpath=//button[@type='button']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/header[2]/div/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Disconnect')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e88769f8-5f49-4d8b-8a59-0ffd4f30beb5",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "linkText=Home",
+      "targets": [
+        ["linkText=Home", "linkText"],
+        ["css=.MuiIconButton-colorInherit", "css:finder"],
+        ["xpath=//a[contains(text(),'Home')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/header/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/home')]", "xpath:href"],
+        ["xpath=//a", "xpath:position"],
+        ["xpath=//a[contains(.,'Home')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "6d1da7ca-3ac2-4bc7-bf77-86a7cd1ba894",
+      "comment": "",
+      "command": "type",
+      "target": "id=:r6:",
+      "targets": [
+        ["id=:r6:", "id"],
+        ["name=email", "name"],
+        ["css=#\\3Ar6\\3A", "css:finder"],
+        ["xpath=//input[@id=':r6:']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div[2]/form/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "test@locamat.fr"
+    }, {
+      "id": "814bdd48-a805-41e9-8cb1-c6667f426bca",
+      "comment": "",
+      "command": "type",
+      "target": "id=:r7:",
+      "targets": [
+        ["id=:r7:", "id"],
+        ["name=password", "name"],
+        ["css=#\\3Ar7\\3A", "css:finder"],
+        ["xpath=//input[@id=':r7:']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div[2]/form/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "Test123@"
+    }, {
+      "id": "4f30c23f-c04a-40fc-968c-cde0c8e8c456",
+      "comment": "",
+      "command": "click",
+      "target": "id=:r6:",
+      "targets": [
+        ["id=:r6:", "id"],
+        ["name=email", "name"],
+        ["css=#\\3Ar6\\3A", "css:finder"],
+        ["xpath=//input[@id=':r6:']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div[2]/form/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "dce57033-fc4b-4d32-aef9-17171a057b50",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.MuiButton-root",
+      "targets": [
+        ["css=.MuiButton-root", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div[2]/form/button", "xpath:idRelative"],
+        ["xpath=//form/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3209ef45-0db8-4426-8afc-7fdab756dbfb",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-root",
+      "targets": [
+        ["css=.MuiButton-root", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div[2]/form/button", "xpath:idRelative"],
+        ["xpath=//form/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "90714fd7-ccd5-4f4c-8b56-41e31be4e9b3",
+      "comment": "",
+      "command": "click",
+      "target": "css=.material-card:nth-child(2) .MuiPaper-root:nth-child(1) .MuiCardMedia-root",
+      "targets": [
+        ["css=.material-card:nth-child(2) .MuiPaper-root:nth-child(1) .MuiCardMedia-root", "css:finder"],
+        ["xpath=//img[@alt=\"Image de l'équipement Super type\"]", "xpath:img"],
+        ["xpath=//div[@id='root']/div/main/section/div/div[2]/div[2]/div/a/img", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/a/img", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0ccb7762-0b6b-422e-b164-0f17b318a5c9",
+      "comment": "",
+      "command": "runScript",
+      "target": "window.scrollTo(0,0)",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f453b4ee-4cda-43d5-a1ad-f681762ca512",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.MuiButton-root",
+      "targets": [
+        ["css=.MuiButton-root", "css:finder"],
+        ["xpath=//button[@type='button']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div[2]/div/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5704390d-5b71-4997-9763-f828df608d8b",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-root",
+      "targets": [
+        ["css=.MuiButton-root", "css:finder"],
+        ["xpath=//button[@type='button']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div[2]/div/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a9dc6c3a-bf4a-4320-a5f1-cb6ca62b8977",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.book-button",
+      "targets": [
+        ["css=.book-button", "css:finder"],
+        ["xpath=//button[@type='button']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div[2]/div/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "49214873-4e7c-4528-8e53-f79eb81e5c31",
+      "comment": "",
+      "command": "click",
+      "target": "css=.react-datepicker-ignore-onclickoutside:nth-child(2)",
+      "targets": [
+        ["css=.react-datepicker-ignore-onclickoutside:nth-child(2)", "css:finder"],
+        ["xpath=//input[@value='01/25/2025']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "51156365-4943-4ccf-a438-727933538552",
+      "comment": "",
+      "command": "click",
+      "target": "css=.react-datepicker__day--009",
+      "targets": [
+        ["css=.react-datepicker__day--009", "css:finder"],
+        ["xpath=//div[2]/div[2]/div[5]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3e20c386-2a0c-4252-bbeb-6cb4de0b1cfd",
+      "comment": "",
+      "command": "click",
+      "target": "css=.react-datepicker-ignore-onclickoutside:nth-child(2)",
+      "targets": [
+        ["css=.react-datepicker-ignore-onclickoutside:nth-child(2)", "css:finder"],
+        ["xpath=//input[@value='01/25/2025']", "xpath:attributes"],
+        ["xpath=//div[2]/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1b574160-f8aa-45f4-8655-d6144a9446be",
+      "comment": "",
+      "command": "click",
+      "target": "css=.react-datepicker__day--selecting-range-end",
+      "targets": [
+        ["css=.react-datepicker__day--selecting-range-end", "css:finder"],
+        ["xpath=//div[5]/div[6]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4c9a156f-eb83-47ee-998f-dc0a9c8a4470",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButtonBase-root:nth-child(5)",
+      "targets": [
+        ["css=.MuiButtonBase-root:nth-child(5)", "css:finder"],
+        ["xpath=(//button[@type='button'])[3]", "xpath:attributes"],
+        ["xpath=//button[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8eb70a68-9460-4e17-90fa-71b942da3402",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Home",
+      "targets": [
+        ["linkText=Home", "linkText"],
+        ["css=.MuiIconButton-root", "css:finder"],
+        ["xpath=//a[contains(text(),'Home')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/header/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/home')]", "xpath:href"],
+        ["xpath=//a", "xpath:position"],
+        ["xpath=//a[contains(.,'Home')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "ed1570e6-db18-47c2-9103-200049e3338e",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "2b2e6313-b46f-426d-ac7c-b6442667b228",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["859a6390-443f-456f-8990-28e33f94c054"]
+  }],
+  "urls": ["https://locamat.ninja/"],
+  "plugins": []
+}
