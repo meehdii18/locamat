@@ -13,28 +13,41 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
         node-version: [22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
     - uses: actions/checkout@v4
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+
     - run: npm ci
+
     - run: npm run build --if-present
-    - run : npm install -g selenium-side-runner
+
     - name: Install Chrome
       run: |
         sudo apt-get update
         sudo apt-get install -y google-chrome-stable
-    - run: npm install -g chromedriver
+
+    - name: Install ChromeDriver (compatible version)
+      run: |
+        CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | cut -d'.' -f1)
+        wget -q "https://chromedriver.storage.googleapis.com/$CHROME_VERSION.0/chromedriver_linux64.zip"
+        sudo unzip chromedriver_linux64.zip -d /usr/local/bin/
+
+    - name: Verify Chrome installation
+      run: google-chrome --version
+
+    - name: Verify ChromeDriver installation
+      run: chromedriver --version
+
     - name: Run Selenium IDE tests
-      run: selenium-side-runner src/test/selenium/LocaMat.side
+      run: selenium-side-runner --parallel 1 src/test/selenium/LocaMat.side
