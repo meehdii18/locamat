@@ -37,6 +37,4 @@ jobs:
         sudo apt-get install -y google-chrome-stable
     - run: npm install -g chromedriver
     - name: Run Selenium IDE tests
-      run: selenium-side-runner src/tests/selenium/connexionUser.js src/tests/selenium/homePage.spec.js src/tests/selenium/activitutilisateurclassique.spec.js src/tests/selenium/admincreatenewuser.spec.js src/tests/selenium/adminonhardware.spec.js src/tests/selenium/adminupdateuser.spec.js  
-      
-    
+      run: selenium-side-runner src/tests/selenium/LocaMat.side
