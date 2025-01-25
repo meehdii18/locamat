@@ -18,7 +18,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20.x, 22.x]
+        node-version: [22.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -33,6 +33,6 @@ jobs:
     - run : npm install -g selenium-side-runner
     - run: npm install -g chromedriver
     - name: Run Selenium IDE tests
-      run: selenium-side-runner src/tests/selenium/LocaMat.side src/tests/selenium/LocaMatV2.side
+      run: selenium-side-runner src/tests/selenium/connexionUser.js src/tests/selenium/homePage.spec.js src/tests/selenium/activitutilisateurclassique.spec.js src/tests/selenium/admincreatenewuser.spec.js src/tests/selenium/adminonhardware.spec.js src/tests/selenium/adminupdateuser.spec.js  
       
     
