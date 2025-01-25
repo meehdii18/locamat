@@ -31,7 +31,7 @@ jobs:
     - run: npm ci
 
     - run: npm run build --if-present
-
+    - run: npm install -g selenium-side-runner
     - name: Install Chrome
       run: |
         sudo apt-get update
@@ -46,4 +46,4 @@ jobs:
       run: chromedriver --version
 
     - name: Run Selenium IDE tests
-      run: selenium-side-runner --server http://localhost:5173/ -c "browserName=chrome" src/test/selenium/LocaMat.side
+      run: selenium-side-runner -c "browserName=chrome" src/test/selenium/LocaMat.side
