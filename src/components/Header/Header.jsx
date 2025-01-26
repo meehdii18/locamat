@@ -46,6 +46,10 @@ export default function Header({ currentUser }) {
         navigate('/admin');
     };
 
+    const handleHomeClick = () => {
+        navigate('/home');
+    };
+
     return (
         <AppBar position="fixed" style={{ background: 'black' }}>
             <Toolbar sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
@@ -54,7 +58,7 @@ export default function Header({ currentUser }) {
                         Bonjour, {currentUser.email}
                     </Typography>
                 )}
-                <IconButton color="inherit" href="/home"
+                <IconButton color="inherit" onClick={handleHomeClick}
                             sx={{
                                 transition: 'color 0.3s ease',
                                 '&:hover': {
