@@ -17,6 +17,7 @@ import './Header.css';
 export default function Header({ currentUser }) {
     const { db } = useFirebase();
     const [isAdmin, setIsAdmin] = useState(false);
+    const [userName, setUserName] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -24,7 +25,9 @@ export default function Header({ currentUser }) {
             if (currentUser) {
                 const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
                 if (userDoc.exists()) {
-                    setIsAdmin(userDoc.data().admin);
+                    const userData = userDoc.data();
+                    setIsAdmin(userData.admin);
+                    setUserName(`${userData.firstName} ${userData.lastName}`);
                 }
             }
         };
@@ -55,7 +58,7 @@ export default function Header({ currentUser }) {
             <Toolbar sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                 {currentUser && (
                     <Typography variant="h6" component="div" sx={{ marginRight: 'auto' }}>
-                        Bonjour, {currentUser.email}
+                        Hello, {userName}
                     </Typography>
                 )}
                 <IconButton color="inherit" onClick={handleHomeClick}
@@ -104,7 +107,6 @@ export default function Header({ currentUser }) {
 
 Header.propTypes = {
     currentUser: PropTypes.shape({
-        email: PropTypes.string,
         uid: PropTypes.string,
     }),
 };

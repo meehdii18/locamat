@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { db, auth } from "../../../firebase.js";
-import { collection, getDocs, deleteDoc, doc, query, where } from "firebase/firestore";
+import { db } from "../../../firebase.js";
+import { getAuth, deleteUser, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
+import {collection, getDocs, deleteDoc, doc, query, where, getDoc} from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import {
     Paper,
@@ -25,7 +26,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import UserPage from "../UserPage/UserPage.jsx";
 import AddIcon from '@mui/icons-material/Add';
-
 
 function Admin_Users() {
     const [error, setError] = useState(null);
@@ -127,8 +127,18 @@ function Admin_Users() {
                 const q = query(bookingsRef, where("userId", "==", selectedUserId));
                 const querySnapshot = await getDocs(q);
                 querySnapshot.forEach(async (doc) => {
-                    await deleteDoc(doc.ref);
+                    await deleteDoc(doc.ref); // Delete from Firestore
                 });
+            }
+            const userDoc = await getDoc(doc(db, "users", selectedUserId));
+            if (userDoc.exists()) {
+                const auth = getAuth();
+                const user = auth.currentUser;
+                if (user && user.uid === selectedUserId) {
+                    const credential = EmailAuthProvider.credential(user.email, user.password);
+                    await reauthenticateWithCredential(user, credential);
+                    await deleteUser(user); // Delete from Firebase Authentication
+                }
             }
             await deleteDoc(doc(db, "users", selectedUserId));
             setUsers(users.filter(user => user.id !== selectedUserId));
@@ -138,7 +148,6 @@ function Admin_Users() {
             setError(err.message);
         }
     };
-
     const handleAddUser = () => {
         navigate('/admin/users/createuser');
     };
