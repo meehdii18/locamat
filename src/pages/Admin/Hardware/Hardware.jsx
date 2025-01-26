@@ -46,6 +46,8 @@ function Admin_Hardware() {
     const [bookingDialog, setBookingDialog] = useState(false);
     const [users, setUsers] = useState({});
     const [alert, setAlert] = useState(null);
+    const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
+    const [selectedBookingId, setSelectedBookingId] = useState(null);
 
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('ref');
@@ -163,6 +165,16 @@ function Admin_Hardware() {
         }
     });
 
+    const handleRemoveDialogClose = () => {
+        setRemoveDialogOpen(false);
+        setSelectedBookingId(null);
+    };
+
+    const handleRemoveDialogOpen = (bookingId) => {
+        setSelectedBookingId(bookingId);
+        setRemoveDialogOpen(true);
+    };
+
     if (error) {
         return <p>Erreur : {error}</p>;
     }
@@ -211,7 +223,6 @@ function Admin_Hardware() {
 
     const fetchBooking = async (id) => {
         try {
-            console.log("Fetching bookings for id: ", id);
             const hardwareRef = (await getDoc(doc(db, "hardware", id))).data().ref;
             const allBookings = await getDocs(collection(db, "booking"));
             const fetchedBookings = [];
@@ -224,7 +235,6 @@ function Admin_Hardware() {
                     const userId = data.userId;
                     const userDoc = await getDoc(doc(db, "users", userId));
                     const userName = userDoc.data().firstName + " " + userDoc.data().lastName;
-                    console.log(userName);
                     fetchedBookings.push({
                         id: booking.id,
                         ...data,
@@ -237,6 +247,19 @@ function Admin_Hardware() {
             setReservations(fetchedBookings);
             setUsers(fetchedUsers);
             console.log("Bookings fetched!");
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
+    const handleRemoveBooking = async () => {
+        try {
+            if (typeof selectedBookingId !== 'string') {
+                throw new Error('Invalid booking ID');
+            }
+            await deleteDoc(doc(db, "booking", selectedBookingId));
+            setReservations(reservations.filter(reservation => reservation.id !== selectedBookingId));
+            handleRemoveDialogClose();
         } catch (err) {
             setError(err.message);
         }
@@ -381,6 +404,11 @@ function Admin_Hardware() {
                                         <TableCell>{reservation.startDate ? new Date(reservation.startDate).toDateString() : 'Invalid Date'}</TableCell>
                                         <TableCell>{reservation.endDate ? new Date(reservation.endDate).toDateString() : 'Invalid Date'}</TableCell>
                                         <TableCell>{reservation.userName || 'Unknown User'}</TableCell>
+                                        <TableCell>
+                                            <IconButton color="secondary" onClick={() => handleRemoveDialogOpen(reservation.id)}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -390,6 +418,27 @@ function Admin_Hardware() {
                 <DialogActions>
                     <Button onClick={handleCalendarClose} color="secondary" variant="contained">
                         Close
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <Dialog
+                open={removeDialogOpen}
+                onClose={handleRemoveDialogClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">{"Confirm Removal"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure you want to remove this booking?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleRemoveDialogClose} color="secondary" variant="contained">
+                        Cancel
+                    </Button>
+                    <Button onClick={handleRemoveBooking} color="secondary" variant="contained" autoFocus>
+                        Remove
                     </Button>
                 </DialogActions>
             </Dialog>
