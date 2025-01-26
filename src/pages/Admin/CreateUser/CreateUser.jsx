@@ -46,7 +46,7 @@ const CreateUser = () => {
     };
 
     return (
-        <Container maxWidth="sm">
+        <Container maxWidth="sm" sx={{ mt: 10, mb: 80 }}>
             <Typography variant="h4" component="h1" gutterBottom>
                 Create User
             </Typography>
