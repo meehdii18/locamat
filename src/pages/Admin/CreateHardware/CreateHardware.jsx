@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import { doc, getFirestore, setDoc, getDoc } from "firebase/firestore";
-import { Button, Container, TextField, IconButton, Alert } from "@mui/material";
+import { doc, getFirestore, setDoc, getDoc, collection, getDocs } from "firebase/firestore";
+import { Button, Container, TextField, IconButton, Alert, Autocomplete } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { validateForm } from "../../../hardwareFormValidation.js";
 import AddIcon from '@mui/icons-material/Add';
@@ -20,7 +20,19 @@ const CreateHardware = () => {
     const [errors, setErrors] = useState({});
     const [alert, setAlert] = useState(null);
     const [attributeKeys, setAttributeKeys] = useState([]);
+    const [types, setTypes] = useState([]);
     const db = getFirestore();
+
+    useEffect(() => {
+        const fetchTypes = async () => {
+            const hardwareCollection = collection(db, "hardware");
+            const hardwareSnapshot = await getDocs(hardwareCollection);
+            const typesList = hardwareSnapshot.docs.map(doc => doc.data().type);
+            setTypes([...new Set(typesList)]); // Remove duplicates
+        };
+
+        fetchTypes();
+    }, [db]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -127,16 +139,29 @@ const CreateHardware = () => {
                     helperText={errors.ref}
                     color="secondary"
                 />
-                <TextField
-                    label="Type"
-                    name="type"
+                <Autocomplete
+                    freeSolo
+                    options={types}
                     value={formData.type}
-                    onChange={handleChange}
+                    onChange={(event, newValue) => {
+                        setFormData({ ...formData, type: newValue });
+                    }}
+                    onInputChange={(event, newInputValue) => {
+                        setFormData({ ...formData, type: newInputValue });
+                    }}
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            label="Type"
+                            name="type"
+                            fullWidth
+                            margin="normal"
+                            error={!!errors.type}
+                            helperText={errors.type}
+                            color="secondary"
+                        />
+                    )}
                     fullWidth
-                    margin="normal"
-                    error={!!errors.type}
-                    helperText={errors.type}
-                    color="secondary"
                 />
                 <Typography variant="h6" component="h2" gutterBottom>
                     Specific Attributes
