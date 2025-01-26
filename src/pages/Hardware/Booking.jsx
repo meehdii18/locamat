@@ -85,7 +85,7 @@ const Booking = ({ onClose, hardwareId, onSuccess }) => {
                 hardwareId: formData.hardware,
                 userId: formData.user,
             });
-            console.log(`Booking confirmed from ${formData.startDate} to ${formData.endDate}`);
+            console.log(`Booking confirmed from ${formData.startDate} to ${formData.endDate} with userId ${formData.user} and hardwareId ${formData.hardware}`);
             setError(null);
             onSuccess("Booking confirmed successfully!");
         } catch (error) {

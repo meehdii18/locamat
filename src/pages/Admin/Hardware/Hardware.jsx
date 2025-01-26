@@ -22,7 +22,8 @@ import {
     TextField,
     TableSortLabel,
     Box,
-    DialogContentText
+    DialogContentText,
+    Alert
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -43,6 +44,8 @@ function Admin_Hardware() {
     const [reservations, setReservations] = useState([]);
     const [selectedBooking, setSelectedBooking] = useState(null);
     const [bookingDialog, setBookingDialog] = useState(false);
+    const [users, setUsers] = useState({});
+    const [alert, setAlert] = useState(null);
 
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('ref');
@@ -212,20 +215,27 @@ function Admin_Hardware() {
             const hardwareRef = (await getDoc(doc(db, "hardware", id))).data().ref;
             const allBookings = await getDocs(collection(db, "booking"));
             const fetchedBookings = [];
-            allBookings.forEach((booking) => {
+            const fetchedUsers = {};
+            for (const booking of allBookings.docs) {
                 if (booking.data().hardwareId === hardwareRef) {
                     const data = booking.data();
-                    const startDate = new Date(data.startDate);
-                    const endDate = new Date(data.endDate);
+                    const startDate = new Date(data.startDate.seconds * 1000);
+                    const endDate = new Date(data.endDate.seconds * 1000);
+                    const userId = data.userId;
+                    const userDoc = await getDoc(doc(db, "users", userId));
+                    const userName = userDoc.data().firstName + " " + userDoc.data().lastName;
+                    console.log(userName);
                     fetchedBookings.push({
                         id: booking.id,
                         ...data,
                         startDate,
-                        endDate
+                        endDate,
+                        userName
                     });
                 }
-            });
+            }
             setReservations(fetchedBookings);
+            setUsers(fetchedUsers);
             console.log("Bookings fetched!");
         } catch (err) {
             setError(err.message);
@@ -236,6 +246,7 @@ function Admin_Hardware() {
         const booking = reservations.find(reservation => {
             const startDate = new Date(reservation.startDate);
             const endDate = new Date(reservation.endDate);
+            const userName = reservation.userName;
             return date >= startDate && date <= endDate;
         });
 
@@ -245,11 +256,6 @@ function Admin_Hardware() {
         } else {
             console.log("No booking found for the selected date.");
         }
-    };
-
-    const handleBookingDialogClose = () => {
-        setBookingDialog(false);
-        setSelectedBooking(null);
     };
 
     return (
@@ -283,6 +289,7 @@ function Admin_Hardware() {
             >
                 Add Hardware
             </Button>
+            {alert && <Alert severity={alert.severity}>{alert.message}</Alert>}
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                 <TableContainer sx={{ maxHeight: 440 }}>
                     <Table stickyHeader aria-label="sticky table">
@@ -363,7 +370,6 @@ function Admin_Hardware() {
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>Hardware ID</TableCell>
                                     <TableCell>Start Date</TableCell>
                                     <TableCell>End Date</TableCell>
                                     <TableCell>Booked By</TableCell>
@@ -372,10 +378,9 @@ function Admin_Hardware() {
                             <TableBody>
                                 {reservations.map((reservation) => (
                                     <TableRow key={reservation.id} onClick={() => handleDateSelect(new Date(reservation.startDate))}>
-                                        <TableCell>{reservation.hardwareId}</TableCell>
-                                        <TableCell>{new Date(reservation.startDate).toDateString()}</TableCell>
-                                        <TableCell>{new Date(reservation.endDate).toDateString()}</TableCell>
-                                        <TableCell>{reservation.userId}</TableCell>
+                                        <TableCell>{reservation.startDate ? new Date(reservation.startDate).toDateString() : 'Invalid Date'}</TableCell>
+                                        <TableCell>{reservation.endDate ? new Date(reservation.endDate).toDateString() : 'Invalid Date'}</TableCell>
+                                        <TableCell>{reservation.userName || 'Unknown User'}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -384,29 +389,6 @@ function Admin_Hardware() {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCalendarClose} color="secondary" variant="contained">
-                        Close
-                    </Button>
-                </DialogActions>
-            </Dialog>
-            <Dialog
-                open={bookingDialog}
-                onClose={handleBookingDialogClose}
-                aria-labelledby="booking-dialog-title"
-                aria-describedby="booking-dialog-description"
-            >
-                <DialogTitle id="booking-dialog-title">Booking Details</DialogTitle>
-                <DialogContent>
-                    {selectedBooking && (
-                        <div>
-                            <p><strong>Hardware ID:</strong> {selectedBooking.hardwareId}</p>
-                            <p><strong>Start Date:</strong> {selectedBooking.startDate.toDateString()}</p>
-                            <p><strong>End Date:</strong> {selectedBooking.endDate.toDateString()}</p>
-                            <p><strong>Booked By:</strong> {selectedBooking.userId}</p>
-                        </div>
-                    )}
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleBookingDialogClose} color="secondary" variant="contained">
                         Close
                     </Button>
                 </DialogActions>
