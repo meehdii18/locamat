@@ -404,6 +404,7 @@ function Admin_Hardware() {
                                     <TableCell>Start Date</TableCell>
                                     <TableCell>End Date</TableCell>
                                     <TableCell>Booked By</TableCell>
+                                    <TableCell>Actions</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
