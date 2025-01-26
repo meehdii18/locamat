@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
-import {Button, Container, FormControlLabel, FormGroup, Switch, TextField} from "@mui/material";
+import {Button, Container, FormControlLabel, FormGroup, IconButton, Switch, TextField} from "@mui/material";
 import { validateForm } from "../../../userFormValidation.js";
 import Typography from "@mui/material/Typography";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const CreateUser = () => {
     const navigate = useNavigate();
@@ -49,6 +50,9 @@ const CreateUser = () => {
 
     return (
         <Container maxWidth="sm" sx={{ mt: 10, mb: 80 }}>
+            <IconButton onClick={() => navigate("/admin/users")} color="secondary">
+                <ArrowBackIcon />
+            </IconButton>
             <Typography variant="h4" component="h1" gutterBottom>
                 Create User
             </Typography>

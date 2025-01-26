@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import { validateForm } from "../../../hardwareFormValidation.js";
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const CreateHardware = () => {
     const navigate = useNavigate();
@@ -101,6 +102,9 @@ const CreateHardware = () => {
 
     return (
         <Container maxWidth="sm" sx={{ mt: 10, mb: 80 }}>
+            <IconButton onClick={() => navigate("/admin/hardware")} color="secondary">
+                <ArrowBackIcon />
+            </IconButton>
             <Typography variant="h4" component="h1" gutterBottom>
                 Create Hardware
             </Typography>
