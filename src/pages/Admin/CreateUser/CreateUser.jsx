@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 import {Button, Container, FormControlLabel, FormGroup, Switch, TextField} from "@mui/material";
@@ -6,6 +7,7 @@ import { validateForm } from "../../../userFormValidation.js";
 import Typography from "@mui/material/Typography";
 
 const CreateUser = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -33,7 +35,7 @@ const CreateUser = () => {
                     email: formData.email,
                     admin: formData.admin
                 });
-                alert('User created successfully');
+                navigate('/admin/users', { state: { success: 'User created successfully' } });
             } catch (error) {
                 alert(error.message);
             }

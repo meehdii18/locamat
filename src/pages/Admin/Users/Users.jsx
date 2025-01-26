@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { db } from "../../../firebase.js";
 import { getAuth, deleteUser, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
 import {collection, getDocs, deleteDoc, doc, query, where, getDoc} from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
+    Alert,
     Paper,
     styled,
     Table,
@@ -37,7 +38,8 @@ function Admin_Users() {
     const navigate = useNavigate();
     const [bookingCount, setBookingCount] = useState(0);
     const [confirmDeleteDialog, setConfirmDeleteDialog] = useState(false);
-
+    const location = useLocation();
+    const [successMessage, setSuccessMessage] = useState(location.state?.success || '');
 
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
         [`&.${tableCellClasses.head}`]: {
@@ -70,6 +72,12 @@ function Admin_Users() {
     };
 
     useEffect(() => {
+        if (successMessage) {
+            const timer = setTimeout(() => {
+                setSuccessMessage('');
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
         const fetchUsers = async () => {
             try {
                 console.log("Fetching users...");
@@ -84,7 +92,7 @@ function Admin_Users() {
             }
         };
         fetchUsers().then(() => console.log("Users fetched!"));
-    }, []);
+    }, [successMessage]);
 
     const handleDeleteOpen = async (id) => {
         setSelectedUserId(id);
@@ -168,6 +176,7 @@ function Admin_Users() {
 
     return (
         <div>
+            {successMessage && <Alert severity="success">{successMessage}</Alert>}
             <TextField
                 label="Search"
                 variant="outlined"
