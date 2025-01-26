@@ -82,3 +82,8 @@
 .book-button:hover {
     background-color: purple;
 }
+
+.booked {
+    background-color: red !important;
+    color: white !important;
+}

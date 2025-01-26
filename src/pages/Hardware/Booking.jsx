@@ -97,6 +97,9 @@ const Booking = ({ onClose, hardwareId, onSuccess }) => {
     return (
         <Box display="flex" flexDirection="column" alignItems="center">
             {error && <Alert severity="error">{error}</Alert>}
+            <Typography  gutterBottom>
+                Dates already booked or impossible are grayed out.
+            </Typography>
             <Typography variant="h6" gutterBottom>
                 Start Date
             </Typography>
