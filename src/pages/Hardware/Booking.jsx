@@ -95,9 +95,13 @@ const Booking = ({ onClose, hardwareId, onSuccess }) => {
     };
 
     return (
-        <Box display="flex" flexDirection="column" alignItems="center">
+        <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+        >
             {error && <Alert severity="error">{error}</Alert>}
-            <Typography  gutterBottom>
+            <Typography gutterBottom>
                 Dates already booked or impossible are grayed out.
             </Typography>
             <Typography variant="h6" gutterBottom>
@@ -113,7 +117,7 @@ const Booking = ({ onClose, hardwareId, onSuccess }) => {
                 placeholderText="Select start date"
                 excludeDates={bookedDates}
             />
-            <Box mt={2}>
+            <Box sx={{ mt: 6 }}>
                 <Typography variant="h6" gutterBottom textAlign="center">
                     End Date
                 </Typography>
@@ -129,7 +133,7 @@ const Booking = ({ onClose, hardwareId, onSuccess }) => {
                     excludeDates={bookedDates}
                 />
             </Box>
-            <Button onClick={onClose} color="secondary" variant="outlined" style={{ marginTop: '20px' }}>
+            <Button onClick={onClose} color="secondary" variant="outlined" style={{ marginTop: '50px' }}>
                 Close
             </Button>
             <Button onClick={handleConfirm} color="secondary" variant="contained" style={{ marginTop: '10px' }}>
