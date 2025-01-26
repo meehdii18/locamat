@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../../../firebase.js";
 import { collection, getDocs, deleteDoc, doc, getDoc } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import {
     Paper,
     styled,
@@ -48,9 +48,10 @@ function Admin_Hardware() {
     const [alert, setAlert] = useState(null);
     const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
     const [selectedBookingId, setSelectedBookingId] = useState(null);
-
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('ref');
+    const location = useLocation();
+    const [successMessage, setSuccessMessage] = useState(location.state?.success || '');
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -89,6 +90,12 @@ function Admin_Hardware() {
     };
 
     useEffect(() => {
+        if (successMessage) {
+            const timer = setTimeout(() => {
+                setSuccessMessage('');
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
         const fetchHardwares = async () => {
             try {
                 const allHardwares = await getDocs(collection(db, "hardware"));
@@ -102,7 +109,7 @@ function Admin_Hardware() {
             }
         };
         fetchHardwares();
-    }, []);
+    }, [successMessage]);
 
     const handleDeleteOpen = (id) => {
         setSelectedHardwareId(id);
@@ -283,6 +290,7 @@ function Admin_Hardware() {
 
     return (
         <div>
+            {successMessage && <Alert severity="success">{successMessage}</Alert>}
             <TextField
                 label="Search"
                 variant="outlined"

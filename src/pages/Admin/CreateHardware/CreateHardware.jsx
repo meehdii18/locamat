@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import { doc, getFirestore, setDoc, getDoc } from "firebase/firestore";
 import { Button, Container, TextField, IconButton, Alert } from "@mui/material";
 import Typography from "@mui/material/Typography";
@@ -7,6 +8,7 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const CreateHardware = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
         photo: '',
@@ -41,7 +43,7 @@ const CreateHardware = () => {
                         type: formData.type,
                         details_specifiques: formData.specificAttributes
                     });
-                    setAlert({ severity: 'success', message: 'Hardware created successfully' });
+                    navigate('/admin/hardware', { state: { success: 'Hardware created successfully' } });
                 }
             } catch (error) {
                 setAlert({ severity: 'error', message: error.message });
