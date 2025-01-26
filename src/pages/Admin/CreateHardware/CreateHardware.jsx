@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { doc, getFirestore, setDoc } from "firebase/firestore";
-import { Button, Container, TextField, IconButton } from "@mui/material";
+import { doc, getFirestore, setDoc, getDoc } from "firebase/firestore";
+import { Button, Container, TextField, IconButton, Alert } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { validateForm } from "../../../hardwareFormValidation.js";
 import AddIcon from '@mui/icons-material/Add';
@@ -16,6 +16,7 @@ const CreateHardware = () => {
     });
 
     const [errors, setErrors] = useState({});
+    const [alert, setAlert] = useState(null);
     const [attributeKeys, setAttributeKeys] = useState([]);
     const db = getFirestore();
 
@@ -27,16 +28,23 @@ const CreateHardware = () => {
 
         if (Object.keys(newErrors).length === 0) {
             try {
-                await setDoc(doc(db, "hardware", formData.ref), {
-                    name: formData.name,
-                    photo: formData.photo,
-                    ref: formData.ref,
-                    type: formData.type,
-                    details_specifiques: formData.specificAttributes
-                });
-                alert('Hardware created successfully');
+                const docRef = doc(db, "hardware", formData.ref);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    setAlert({ severity: 'error', message: 'Reference already exists' });
+                } else {
+                    await setDoc(docRef, {
+                        name: formData.name,
+                        photo: formData.photo,
+                        ref: formData.ref,
+                        type: formData.type,
+                        details_specifiques: formData.specificAttributes
+                    });
+                    setAlert({ severity: 'success', message: 'Hardware created successfully' });
+                }
             } catch (error) {
-                alert(error.message);
+                setAlert({ severity: 'error', message: error.message });
             }
         }
     };
@@ -82,6 +90,7 @@ const CreateHardware = () => {
             <Typography variant="h4" component="h1" gutterBottom>
                 Create Hardware
             </Typography>
+            {alert && <Alert severity={alert.severity}>{alert.message}</Alert>}
             <form onSubmit={handleSubmit}>
                 <TextField
                     label="Name"

@@ -85,7 +85,7 @@ const Booking = ({ onClose, hardwareId, onSuccess }) => {
                 hardwareId: formData.hardware,
                 userId: formData.user,
             });
-            console.log(`Booking confirmed from ${formData.startDate} to ${formData.endDate}`);
+            console.log(`Booking confirmed from ${formData.startDate} to ${formData.endDate} with userId ${formData.user} and hardwareId ${formData.hardware}`);
             setError(null);
             onSuccess("Booking confirmed successfully!");
         } catch (error) {
@@ -97,6 +97,9 @@ const Booking = ({ onClose, hardwareId, onSuccess }) => {
     return (
         <Box display="flex" flexDirection="column" alignItems="center">
             {error && <Alert severity="error">{error}</Alert>}
+            <Typography  gutterBottom>
+                Dates already booked or impossible are grayed out.
+            </Typography>
             <Typography variant="h6" gutterBottom>
                 Start Date
             </Typography>

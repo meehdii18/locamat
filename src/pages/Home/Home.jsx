@@ -102,6 +102,7 @@ function Home() {
                                                         height="140"
                                                         image={item.photo}
                                                         alt={`Image de l'équipement ${item.name}`}
+                                                        style={{ width: '100%', height: '350px', objectFit: 'cover' }}
                                                     />
                                                     <CardContent>
                                                         <Typography variant="h6"

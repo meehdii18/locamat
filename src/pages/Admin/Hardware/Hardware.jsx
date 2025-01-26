@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../../../firebase.js";
-import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
+import { collection, getDocs, deleteDoc, doc, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import {
     Paper,
@@ -10,23 +10,29 @@ import {
     TableCell,
     tableCellClasses,
     TableContainer,
-    TableHead, TablePagination,
+    TableHead,
+    TablePagination,
     TableRow,
     Dialog,
     DialogActions,
     DialogContent,
-    DialogContentText,
     DialogTitle,
     Button,
     IconButton,
-    TextField, TableSortLabel, Box
+    TextField,
+    TableSortLabel,
+    Box,
+    DialogContentText,
+    Alert
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import InfoIcon from '@mui/icons-material/Info';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { visuallyHidden } from "@mui/utils";
 import PropTypes from "prop-types";
+import './Hardware.css';
 
 function Admin_Hardware() {
     const [error, setError] = useState(null);
@@ -34,6 +40,14 @@ function Admin_Hardware() {
     const [searchQuery, setSearchQuery] = useState("");
     const [deleteDialog, setDeleteDialog] = useState(false);
     const [selectedHardwareId, setSelectedHardwareId] = useState(null);
+    const [calendarDialog, setCalendarDialog] = useState(false);
+    const [reservations, setReservations] = useState([]);
+    const [selectedBooking, setSelectedBooking] = useState(null);
+    const [bookingDialog, setBookingDialog] = useState(false);
+    const [users, setUsers] = useState({});
+    const [alert, setAlert] = useState(null);
+    const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
+    const [selectedBookingId, setSelectedBookingId] = useState(null);
 
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('ref');
@@ -122,6 +136,17 @@ function Admin_Hardware() {
         navigate(`/admin/hardware/edithardware/${id}`);
     };
 
+    const handleCalendar = async (id) => {
+        setSelectedHardwareId(id);
+        await fetchBooking(id);
+        setCalendarDialog(true);
+    };
+
+    const handleCalendarClose = () => {
+        setCalendarDialog(false);
+        setSelectedHardwareId(null);
+    };
+
     const handleSearchChange = (event) => {
         setSearchQuery(event.target.value);
     };
@@ -139,6 +164,16 @@ function Admin_Hardware() {
             return a[orderBy] > b[orderBy] ? -1 : a[orderBy] < b[orderBy] ? 1 : 0;
         }
     });
+
+    const handleRemoveDialogClose = () => {
+        setRemoveDialogOpen(false);
+        setSelectedBookingId(null);
+    };
+
+    const handleRemoveDialogOpen = (bookingId) => {
+        setSelectedBookingId(bookingId);
+        setRemoveDialogOpen(true);
+    };
 
     if (error) {
         return <p>Erreur : {error}</p>;
@@ -186,6 +221,66 @@ function Admin_Hardware() {
         orderBy: PropTypes.string.isRequired,
     };
 
+    const fetchBooking = async (id) => {
+        try {
+            const hardwareRef = (await getDoc(doc(db, "hardware", id))).data().ref;
+            const allBookings = await getDocs(collection(db, "booking"));
+            const fetchedBookings = [];
+            const fetchedUsers = {};
+            for (const booking of allBookings.docs) {
+                if (booking.data().hardwareId === hardwareRef) {
+                    const data = booking.data();
+                    const startDate = new Date(data.startDate.seconds * 1000);
+                    const endDate = new Date(data.endDate.seconds * 1000);
+                    const userId = data.userId;
+                    const userDoc = await getDoc(doc(db, "users", userId));
+                    const userName = userDoc.data().firstName + " " + userDoc.data().lastName;
+                    fetchedBookings.push({
+                        id: booking.id,
+                        ...data,
+                        startDate,
+                        endDate,
+                        userName
+                    });
+                }
+            }
+            setReservations(fetchedBookings);
+            setUsers(fetchedUsers);
+            console.log("Bookings fetched!");
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
+    const handleRemoveBooking = async () => {
+        try {
+            if (typeof selectedBookingId !== 'string') {
+                throw new Error('Invalid booking ID');
+            }
+            await deleteDoc(doc(db, "booking", selectedBookingId));
+            setReservations(reservations.filter(reservation => reservation.id !== selectedBookingId));
+            handleRemoveDialogClose();
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
+    const handleDateSelect = (date) => {
+        const booking = reservations.find(reservation => {
+            const startDate = new Date(reservation.startDate);
+            const endDate = new Date(reservation.endDate);
+            const userName = reservation.userName;
+            return date >= startDate && date <= endDate;
+        });
+
+        if (booking) {
+            setSelectedBooking(booking);
+            setBookingDialog(true);
+        } else {
+            console.log("No booking found for the selected date.");
+        }
+    };
+
     return (
         <div>
             <TextField
@@ -217,6 +312,7 @@ function Admin_Hardware() {
             >
                 Add Hardware
             </Button>
+            {alert && <Alert severity={alert.severity}>{alert.message}</Alert>}
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                 <TableContainer sx={{ maxHeight: 440 }}>
                     <Table stickyHeader aria-label="sticky table">
@@ -237,6 +333,9 @@ function Admin_Hardware() {
                                             <IconButton color="secondary" onClick={() => handleDetails(hardware.id)}>
                                                 <InfoIcon />
                                             </IconButton>
+                                            <IconButton color="secondary" onClick={() => handleCalendar(hardware.id)}>
+                                                <CalendarMonthIcon />
+                                            </IconButton>
                                             <IconButton color="secondary" onClick={() => handleEditOpen(hardware.id)}>
                                                 <EditIcon />
                                             </IconButton>
@@ -245,6 +344,7 @@ function Admin_Hardware() {
                                             </IconButton>
                                         </TableCell>
                                     </TableRow>
+
                                 ))}
                         </TableBody>
                     </Table>
@@ -277,6 +377,68 @@ function Admin_Hardware() {
                     </Button>
                     <Button onClick={handleDelete} color="secondary" variant="contained" autoFocus>
                         Delete
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <Dialog
+                open={calendarDialog}
+                onClose={handleCalendarClose}
+                maxWidth="md"
+                fullWidth
+                sx={{ '& .MuiDialog-paper': { height: '50vh', width: '50vw' } }}
+            >
+                <DialogTitle>Bookings</DialogTitle>
+                <DialogContent>
+                    <TableContainer>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Start Date</TableCell>
+                                    <TableCell>End Date</TableCell>
+                                    <TableCell>Booked By</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {reservations.map((reservation) => (
+                                    <TableRow key={reservation.id} onClick={() => handleDateSelect(new Date(reservation.startDate))}>
+                                        <TableCell>{reservation.startDate ? new Date(reservation.startDate).toDateString() : 'Invalid Date'}</TableCell>
+                                        <TableCell>{reservation.endDate ? new Date(reservation.endDate).toDateString() : 'Invalid Date'}</TableCell>
+                                        <TableCell>{reservation.userName || 'Unknown User'}</TableCell>
+                                        <TableCell>
+                                            <IconButton color="secondary" onClick={() => handleRemoveDialogOpen(reservation.id)}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCalendarClose} color="secondary" variant="contained">
+                        Close
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <Dialog
+                open={removeDialogOpen}
+                onClose={handleRemoveDialogClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">{"Confirm Removal"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure you want to remove this booking?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleRemoveDialogClose} color="secondary" variant="contained">
+                        Cancel
+                    </Button>
+                    <Button onClick={handleRemoveBooking} color="secondary" variant="contained" autoFocus>
+                        Remove
                     </Button>
                 </DialogActions>
             </Dialog>

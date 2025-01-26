@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { db, auth } from "../../../firebase.js";
-import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
+import { collection, getDocs, deleteDoc, doc, query, where } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import {
     Paper,
@@ -26,6 +26,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import UserPage from "../UserPage/UserPage.jsx";
 import AddIcon from '@mui/icons-material/Add';
 
+
 function Admin_Users() {
     const [error, setError] = useState(null);
     const [users, setUsers] = useState([]);
@@ -34,6 +35,9 @@ function Admin_Users() {
     const [editDialog, setEditDialog] = useState(false);
     const [selectedUserId, setSelectedUserId] = useState(null);
     const navigate = useNavigate();
+    const [bookingCount, setBookingCount] = useState(0);
+    const [confirmDeleteDialog, setConfirmDeleteDialog] = useState(false);
+
 
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
         [`&.${tableCellClasses.head}`]: {
@@ -82,13 +86,26 @@ function Admin_Users() {
         fetchUsers().then(() => console.log("Users fetched!"));
     }, []);
 
-    const handleDeleteOpen = (id) => {
+    const handleDeleteOpen = async (id) => {
         setSelectedUserId(id);
-        setDeleteDialog(true);
+        const bookingsRef = collection(db, "booking");
+        const q = query(bookingsRef, where("userId", "==", id));
+        const querySnapshot = await getDocs(q);
+        const count = querySnapshot.size;
+        setBookingCount(count);
+        if (count > 0) {
+            setConfirmDeleteDialog(true);
+        } else {
+            setDeleteDialog(true);
+        }
     };
 
     const handleDeleteClose = () => {
         setDeleteDialog(false);
+    };
+
+    const handleConfirmDeleteClose = () => {
+        setConfirmDeleteDialog(false);
         setSelectedUserId(null);
     };
 
@@ -102,19 +119,21 @@ function Admin_Users() {
         setSelectedUserId(null);
     }
 
+
     const handleDelete = async () => {
         try {
-            // Delete user from Firestore
+            if (bookingCount > 0) {
+                const bookingsRef = collection(db, "booking");
+                const q = query(bookingsRef, where("userId", "==", selectedUserId));
+                const querySnapshot = await getDocs(q);
+                querySnapshot.forEach(async (doc) => {
+                    await deleteDoc(doc.ref);
+                });
+            }
             await deleteDoc(doc(db, "users", selectedUserId));
             setUsers(users.filter(user => user.id !== selectedUserId));
-
-            // Delete user from Firebase Authentication
-            const user = auth.currentUser;
-            if (user) {
-                await user.delete();
-            }
-
             handleDeleteClose();
+            handleConfirmDeleteClose();
         } catch (err) {
             setError(err.message);
         }
@@ -261,6 +280,27 @@ function Admin_Users() {
                 <DialogActions>
                     <Button onClick={handleEditClose} color="secondary" variant={"contained"}>
                         Retour
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <Dialog
+                open={confirmDeleteDialog}
+                onClose={handleConfirmDeleteClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">{"Confirm Deletion"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        There are {bookingCount} booking(s) related to this user. Are you sure you want to delete them?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleConfirmDeleteClose} color="secondary" variant="contained">
+                        Cancel
+                    </Button>
+                    <Button onClick={handleDelete} color="secondary" variant="contained" autoFocus>
+                        Delete
                     </Button>
                 </DialogActions>
             </Dialog>
