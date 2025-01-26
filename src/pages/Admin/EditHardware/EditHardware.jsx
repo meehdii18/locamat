@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import { validateForm } from "../../../hardwareFormValidation.js";
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 const EditHardware = () => {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -58,7 +59,7 @@ const EditHardware = () => {
                     details_specifiques: formData.specificAttributes
                 });
                 alert('Hardware updated successfully');
-                navigate("/admin");
+                navigate("/admin/hardware");
             } catch (error) {
                 alert(error.message);
             }
@@ -103,6 +104,9 @@ const EditHardware = () => {
 
     return (
         <Container maxWidth="sm" sx={{ mt: 10, mb: 80 }}>
+            <IconButton onClick={() => navigate("/admin/hardware")} color="secondary">
+                <ArrowBackIcon />
+            </IconButton>
             <Typography variant="h4" component="h1" gutterBottom>
                 Edit Hardware
             </Typography>
